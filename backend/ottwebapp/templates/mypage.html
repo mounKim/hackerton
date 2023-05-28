@@ -1,0 +1,20 @@
+{% extends "master.html" %}
+
+{% block title %}
+  Mypage
+{% endblock %}
+
+{% block content %}
+    
+    <h1>Welcome {{user.user_name}}</h1>
+    
+    <div class="mycard">
+    <h2> {{user.user_name}}'s videos</h2>
+    <ul>
+    {% for v in save_videos %}
+        <li onclick="window.location = '../videos/{{ v.id }}'">{{ v.video_name }}</li>
+    {% endfor %}
+    </ul>
+    </div>
+
+{% endblock %}

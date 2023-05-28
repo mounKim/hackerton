@@ -1,0 +1,11 @@
+{% extends "master.html" %}
+
+{% block title %}
+    {{ v.video_name }}
+{% endblock %}
+
+{% block content %}
+    <h1>Play {{ v.video_name }}</h1>
+    
+    <p>url: {{ v.video_url }}</p>
+{% endblock %}

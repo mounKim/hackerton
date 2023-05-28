@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h3>Users</h3>
+<table border='1'>
+  <tr>
+    <th>ID</th>
+    <th>PW</th>
+    <th>EMAIL</th>
+    <th>NAME</th>
+  </tr>
+  {% for u in users %}
+    <tr>
+      <td>{{ u.user_id }}</td>
+      <td>{{ u.user_pw }}</td>
+      <td>{{ u.user_email }}</td>
+      <td>{{ u.user_name }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+<h3>Videos</h3>
+<table border='1'>
+  <tr>
+    <th>VIDEO_CATEGORY</th>
+    <th>ID</th>
+    <th>VIDEO_NAME</th>
+    <th>VIDEO_URL</th>
+
+  </tr>
+  {% for v in videos %}
+    <tr>
+      <td>{{ v.video_category }}</td>
+      <td>{{ v.id }}</td>
+      <td>{{ v.video_name }}</td>
+      <td>{{ v.video_url }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+<h3>Save Videos</h3>
+<table border='1'>
+  <tr>
+    <th>User ID</th>
+    <th>Video ID</th>
+  </tr>
+  {% for v in save_videos %}
+    <tr>
+      <td>{{ v.user_id }}</td>
+      <td>{{ v.video_id }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+</body>
+</html>

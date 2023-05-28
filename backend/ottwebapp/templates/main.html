@@ -1,0 +1,20 @@
+{% extends "master.html" %}
+
+{% block title %}
+  San Player
+{% endblock %}
+
+
+{% block content %}
+<div class="main">
+  <h1>Welcome to San Player</h1>
+
+  <h3> video contents lists </h3>
+  <ul>
+  {% for v in all_videos %}
+      <li><a href="../videos/{{ v.id }}">{{ v.video_name }}</a></li>
+  {% endfor %}
+  </ul>
+  
+</div>
+{% endblock %}
