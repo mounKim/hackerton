@@ -132,8 +132,10 @@ class WatchedVideoView(APIView):
 
 class VideoCategoryView(APIView):        
     def get(self, request):
-        category = request.data.get('category')
-        videos = VideoCategory.objects.filter(category=category).values()
+        category = request.GET.dict()['category']
+        category = category.replace('%20', ' ')
+        videos = VideoCategory.objects.get(category=category).videos.all()
+        # videos = VideoList.objects.filter(category=category).values()
         serializer = VideoListSerializer(videos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)   
 

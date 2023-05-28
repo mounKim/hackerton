@@ -1,0 +1,148 @@
+.mainpage_div {
+    overflow: hidden;
+}
+
+.mainpage_div .mainpage_header {
+    background-color: #C7EBFF;
+    min-height: 60vh;
+    display: flex;
+    width: 100%;
+    height:100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.mainpage_header .logo {
+    height: 150px;
+    width: 200px;
+    pointer-events: none;
+}
+
+.mainpage_div .logo {
+    height: 150px;
+    width: 200px;
+    pointer-events: none;
+}
+
+.mainpage_div .mainpage_body {
+    background-color: #C7EBFF;
+    min-height: 40vh;
+    display: flex;
+    width: 100%;
+    height:100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.mainpage_div .cloudbutton1 {
+    background-color: transparent;
+    border: transparent;
+    width: 300px;
+    height: 140px;
+}
+.mainpage_div .cloudbutton2 {
+    background-color: transparent;
+    border: transparent;
+    width: 200px;
+    height: 95px;
+}
+
+.mainpage_div .mountainbutton {
+    top: 0;
+    left: 0;
+    border: transparent;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.mainpage_div .mountains {
+    position: relative;
+}
+
+.mainpage_div .mountainimage {
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.mainpage_div .mtdiv {
+    float: left;
+    position: absolute;
+    /* uncomment this to make border*/
+    /* background-color: green; */
+    margin: 0%;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.mainpage_div .mtdiv:hover {
+    z-index: 1000 !important;
+}
+
+.mainpage_div .mountainname {
+    position: relative;
+    font-size: 20;
+    color: white;
+    bottom: 20%;
+}
+
+.mainpage_div .thumbnail {
+    width: 280px;
+    height: 167px;
+    border-radius: 5%;
+    margin: 5px;
+}
+
+.mainpage_div .videobutton {
+    border-style: solid;
+    background-color: transparent;
+    border-width: 2px 2px 2px 2px;
+    border-color: white;
+    border-radius: 5%;
+}
+
+.mainpage_div .videoname {
+    color: white;
+}
+
+.mainpage_div .videolist {
+    width: 100%;
+    height:100%;
+
+    background-color: #CE8E60;
+}
+
+.mainpage_div .videosdiv {
+    position: relative;
+    white-space: nowrap;
+    top: -36px;
+    width: 100%;
+    height:384px;
+}
+
+.mainpage_div .nomountain {
+    line-height: 9;
+}
+
+.mainpage_div .selectedmountain {
+    line-height: 2;
+    position: relative;
+    left: -20%;
+    top: 4%;
+}
+
+.mainpage_div .videoscroll {
+    overflow:auto;
+    background-color: #C7EBFF;
+}
+
+.mainpage_div .videodiv {
+    display: inline-block;
+    margin: 10px;
+}

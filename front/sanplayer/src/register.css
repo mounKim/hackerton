@@ -1,0 +1,81 @@
+.register {
+    text-align: center;
+}
+  
+.register_header .logo {
+    height: 150px;
+    width: 200px;
+    pointer-events: none;
+}
+  
+.register_header {
+    overflow: hidden;
+    background-color: #C7EBFF;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.register_header .register_box {
+    width: 400px;
+    height: 650px;
+    padding: 40px;
+    padding-top: 13px;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.register_header .register_box > h2{
+    font-size: 24px;
+    color: #C7EBFF;
+    margin-bottom: 20px;
+}
+
+.register_header #register-form > input{
+    width: 100%;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    background-color: #F8F8F8;
+}
+.register_header #register-form > input::placeholder{
+    color: #999999;
+}
+.register_header #register-form > input[type="submit"]{
+    opacity: 1;
+    color: #ffffff;
+    font-size: 16px;
+    background-color: #ade2ff;
+    margin-top: 20px;
+}
+.register_header #register-form > input[type="checkbox"]{
+    display: none;
+}
+.register_header #register-form > label{
+    color: #999999;
+    font-size: 16px;
+}
+.register_header #register-form input[type="checkbox"] + label{
+    cursor: pointer;
+    padding-left: 26px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.register_header #register-form input[type="checkbox"]:checked + label{
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.register_header #register-form > label > p {
+    color: #f56b6b;
+    font-size: 16px;
+}
+.register_header #register-form > input[type="submit"]:disabled{
+    opacity: 0.4;
+    cursor: not_allowed;
+}

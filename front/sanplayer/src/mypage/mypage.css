@@ -1,0 +1,49 @@
+.mypage_header {
+    width: 100%;
+    height: 100%;
+    background-color: #C7EBFF;
+    color: white;
+}
+
+.mypage_header .container {
+    display: flex;
+    flex-direction: row;
+}
+
+.mypage_header .item {
+    margin: 10px 50px;
+}
+
+.mypage_header button {
+    display: block;
+    font-size: 30px;
+    margin-left: 50px;
+    padding: 10px;
+}
+
+.mypage_header h1 {
+    text-align: left;
+    padding: 50px;
+    font-size: 50px;
+    border-bottom: 1px dashed black;
+}
+
+.mypage_header h2 {
+    margin: 0;
+    text-align: left;
+    padding: 50px;
+    font-size: 40px;
+}
+
+.mypage_header h3 {
+    font-size: 20px;
+}
+
+.mypage_header a {
+    display: inline-block;
+}
+
+.mypage_header #video {
+    width: auto;
+    display: inline;
+}

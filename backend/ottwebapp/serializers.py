@@ -22,14 +22,16 @@ class CategorySerializer(serializers.ModelSerializer):
 #                   'video_category')
         
 class VideoListSerializer(serializers.ModelSerializer):
-    video_category = CategorySerializer(many=True, required=False)
+    # video_category = CategorySerializer(many=True, required=False)
+    # id = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # image = serializers.SerializerMethodField()
 
     class Meta:
         model = VideoList
-        fields = ('video_url',
+        fields = ('id',
+                  'video_url',
                   'video_name',
-                  'image',
-                  'video_category',)
+                  'image')
 
 class UserCategorySerializer(serializers.ModelSerializer):
     # user = UserSerializer(many=False, read_only=True)
