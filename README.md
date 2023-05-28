@@ -54,6 +54,7 @@ pip install django==3.2 psycopg2-binary django-cors-headers whitenoise pillow
 # terminal 1: run frontend
 ```
 cd fron/sanplayer/
+npm install
 npm start
 ```
 
