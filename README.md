@@ -31,7 +31,7 @@
 ![Data](demo/recommend.png)
 
 - 영상 재생
-![Data](demo/video.png)
+![Data](demo/video_play.png)
 
 
 - 앞으로 :
@@ -39,7 +39,7 @@
         - 유저별 찜한 비디오 목록
         - 유저별 시청 기록
         - 동영상 스트리밍 정보 저장 및 시각화
-    - hls, 배속
+    - 해상도 설정
     - 기타 : 사용자 편의를 위한 디테일한 부분 수정
 
 ----

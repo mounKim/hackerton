@@ -181,7 +181,8 @@ class Video_comp extends React.Component {
                         <button className='btn' onClick={this.handleZeroClick}>Level 0</button>
                         <button className='btn' onClick={this.handleAutoClick}>Auto</button>
                     </div>
-                    <video payload="" id="video"></video>
+                    <video controls payload="" id="video"></video>
+                    <video ></video>
                     <button>배속</button>
                     <button>해상도</button>
                     <button onClick={this.handleSave}>찜하기</button>
