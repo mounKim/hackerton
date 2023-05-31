@@ -9,8 +9,7 @@ urlpatterns = [
     path('watched_video/', WatchedVideoView.as_view()),
     path('video_category/', VideoCategoryView.as_view()),
     path('user_category/', UserCategoryView.as_view()),
-
-    # path('streaming_quality/', StreamingQualityView.as_view()),
+    path('streaming_quality/', StreamingQualityView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

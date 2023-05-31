@@ -109,19 +109,34 @@ class Video_comp extends React.Component {
 
         const video = document.getElementById('video');
         const hls = new Hls();
-    
+        const optionDropdown = document.getElementById('optionDropdown');
+        
         hls.loadSource(link);
         hls.attachMedia(video); 
         hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
             console.log(
               '>>>>>>>>>>>> manifest loaded, found ' + data.levels.length + ' quality level');
-                video.muted = true;
-                var playPromise = video.play();
-                if (playPromise !== undefined) { playPromise.then((_) => {}).catch((error) => {}); }
-                video.muted = false;
+            video.muted = true;
+            var playPromise = video.play();
+            if (playPromise !== undefined) { playPromise.then((_) => {}).catch((error) => {}); }
+            video.muted = false;
+            optionDropdown.innerHTML = '';
+            for (let i = 0; i <= data.levels.length; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `해상도 ${data.levels[i]['height']}`;
+                optionDropdown.appendChild(option);
+            }
           });    
+
         this.hlsRef = hls;
-        hls.on(Hls.Events.FRAG_LOADED, function(event, data) {
+        axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
+            'user': user,
+            'link': link,
+            'videoid': videoid
+        })
+        
+        hls.on(Hls.Events.FRAG_LOADED, async function(event, data) {
             console.log('=========================================================');
             console.log('>>>>>>>>>>>> Estimated bandwidth:', hls.bandwidthEstimate + ' bps');   
             var index = hls.currentLevel;
@@ -133,18 +148,18 @@ class Video_comp extends React.Component {
                 if (level.height) {
                     console.log('>>>>>>>>>>>> Selected resolution:', level.height + 'p');
                 }
-                if (level.bitrate) {        
+                if (level.bitrate) {      
                     console.log('>>>>>>>>>>>> Selected bandwidth:', Math.round(level.bitrate / 1000) + ' kbps');
                     if (index !== -1 && index >=0) {
                         console.log('>>>>>>>>>>>> Selected bandwidth:', hls.levels[index].attrs.BANDWIDTH + ' bps');
                     }    
                 }
+                await axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
+                    'resolution': level.height,
+                    'bitrate': Math.round(level.bitrate / 1000)
+                })
             }
-        });
-        this.setState({
-            user: user,
-            link: link,
-            videoid: videoid
+
         });
     }
 
@@ -163,39 +178,53 @@ class Video_comp extends React.Component {
         }
     }
 
+    async handlResolution(event){
+        event.preventDefault();
+    }
+
+    handleLevelClick = () => {
+        const optionDropdown = document.getElementById('optionDropdown');
+        var level = optionDropdown.options[optionDropdown.selectedIndex].value;
+        console.log('Button clicked!', level);
+        this.hlsRef.currentLevel = level;
+    };
+
     handleZeroClick = () => {
         console.log('Button clicked!');
         this.hlsRef.currentLevel = 0;
     };
-      
+
     handleAutoClick = () => {
         console.log('Button clicked!');
         this.hlsRef.currentLevel = -1; // Auto resolution switching
     };
-    
+
     render() {
         return(
             <ConditionalLink to="../login/" condition={this.state.user === null} style={{ textDecoration: "none" }}>
                 <div className="video_header">
+                    <select id="optionDropdown" onChange={this.handleLevelClick}>
+                        <option value="">해상도</option>
+                    </select>
+
                     <div>
                         <button className='btn' onClick={this.handleZeroClick}>Level 0</button>
                         <button className='btn' onClick={this.handleAutoClick}>Auto</button>
                     </div>
                     <video controls payload="" id="video"></video>
-                    <video ></video>
-                    <button>배속</button>
-                    <button>해상도</button>
+                    
                     <button onClick={this.handleSave}>찜하기</button>
                 </div>
             </ConditionalLink>
         )
     }
+
+
 }
 
 function ConditionalLink({ children, condition, ...props }) {
     return !!condition && props.to ? <Link {...props}>{children}</Link> : <>{children}</>
 }
-
 
 export default function Video() {
     let params = useParams();

@@ -103,32 +103,6 @@ class WatchedVideoView(APIView):
 
         return Response({'message': 'Watched Video saved successfully'}, status=status.HTTP_201_CREATED)
     
-# class StreamingQualityView(APIView):        
-#     def get(self, request):
-#         video_id = request.data.get('video_id')         
-#         video_info = StreamingQuality.objects.get(video_id=video_id)
-#         serializer = StreamingQualitySerializer(video_info, many=True)
-#         return Response(serializer.data, status=status.HTTP_200_OK)        
-    
-#     def post(self, request):
-#         video_id = request.data.get('video_id')
-#         hls_data = request.data.get('hls_data')
-
-#         # TODO : parsing -> video url, content_info, bandwidth, bitrate_resource, resolution, streaming_type, protocol
-
-#         streaming_quality = StreamingQulity(
-#                                             video_id = video_id,
-#                                             content_info = content_info,
-#                                             video_url = video_url,
-#                                             bandwidth = bandwidth,
-#                                             bitrate_resource = bitrate_resource,
-#                                             resolution = resolution,
-#                                             streaming_type = streaming_type,
-#                                             protocol = protocol 
-#                                         )
-
-#         streaming_quality.save()
-#         return Response({'message': 'Streaming Quality saved successfully'}, status=status.HTTP_201_CREATED)
 
 class VideoCategoryView(APIView):        
     def get(self, request):
@@ -146,3 +120,28 @@ class UserCategoryView(APIView):
         likes = UserCategory.objects.filter(user_id=user).values()
         serializer = UserCategorySerializer(likes[0])
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class StreamingQualityView(APIView):            
+    def post(self, request):
+        # video_id = request.data.get('video_id')
+        user, link, vid = request.data.get('user'), request.data.get('link'), request.data.get('video_id')
+        print("info : ", user, link, vid)
+        resolution = request.data.get('resolution')
+        bitrate = request.data.get('bitrate')
+        print("resolution : ", resolution, ",   bitrate : ", bitrate)
+
+        # # TODO : parsing -> video url, content_info, bandwidth, bitrate_resource, resolution, streaming_type, protocol
+
+        # streaming_quality = StreamingQulity(
+        #                                     video_id = video_id,
+        #                                     content_info = content_info,
+        #                                     video_url = video_url,
+        #                                     bandwidth = bandwidth,
+        #                                     bitrate_resource = bitrate_resource,
+        #                                     resolution = resolution,
+        #                                     streaming_type = streaming_type,
+        #                                     protocol = protocol 
+        #                                 )
+
+        # streaming_quality.save()
+        return Response({'message': 'Streaming Quality saved successfully'}, status=status.HTTP_201_CREATED)
