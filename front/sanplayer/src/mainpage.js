@@ -81,28 +81,29 @@ class Videos extends React.Component {
 
 function Mt (props){
     return(
-        <motion.div className='mtdiv' whileHover={{scale:1.2}} style={{zIndex:props.selected?999:100-props.size, width:props.size * 35, height:props.size * 30, position:'absolute', top: - props.size * 30, left: props.position * 120 - 500}}>
-            <button className='mountainbutton' onClick={props.onClick} style={{backgroundColor:props.selected?mountain_color[4]:props.color}}>
-                <h3 className='mountainname' style={{zIndex:200}}>
-                    {props.name}
-                </h3>
-            </button>
-        </motion.div>
+        <div className='mtwrapdiv' style={{width:props.size * 35, height:props.size * 30, position:'absolute', top: - props.size * 30, left: props.position * 160 - 650}}>
+            <motion.div className='mtdiv' whileHover={{scale:1.2}} style={{zIndex:(100-props.size), width:'100%', height:'100%'}}>
+                <button className='mountainbutton' onClick={props.onClick} style={{backgroundColor:props.selected?mountain_color[4]:props.color}}>
+                </button>
+            </motion.div>
+            <h3 className='mountainname' style={{zIndex:200, top: props.size * 30, 'fontSize': 12, width:'80px', left: props.size * 17.5 - 40}}>
+                {props.name}
+            </h3>
+        </div>
     )
 }
 
 class Mountains extends React.Component {
     constructor(props) {
         super(props);
-        this.parent = props.parent;
     }
     
     renderMountain(i){
-        if(this.parent.state.categorylist[i] == null){
+        if(this.props.categoryinfo[i] == null){
             return <div />;
         }
         else{
-            return <Mt className='mt' onClick={() => this.parent.handleClick(i)} size={4 + 0.5 * this.parent.state.categorylist[i].recommand} selected={(this.parent.state.cur_mountain === i)} position={i} name={this.parent.state.categorylist[i].name} color={mountain_color[color_index[i]]}/>
+            return <Mt className='mt' onClick={() => this.props.parent.handleClick(i)} size={this.props.categoryinfo[i].recommand} selected={(this.props.cur_mountain === i)} position={i} name={this.props.categoryinfo[i].name} color={mountain_color[color_index[i]]}/>
         }
     }
 
@@ -134,11 +135,11 @@ class MainPage extends React.Component {
     }
 
     async componentDidMount() {
+        var categorylist = category_name.map((x) => ({name: x, recommand: null, video: null}));
         try {
             // POST 요청은 body에 실어 보냄
             var videos = null;
             var user = sessionStorage.getItem('user_id')
-            var categorylist = category_name.map((x) => ({name: x, recommand: null, video: null}));
             await axios.get('http://127.0.0.1:8000/user_category/?user_id='+user)
             .then(function(response) {
                 videos = response.data;
@@ -155,16 +156,18 @@ class MainPage extends React.Component {
                 });
             }
             for(let i = 0; i < 8; i++){
-                categorylist[i].recommand = 1 + 9 * (categorylist[i].recommand - min)/(max - min);
+                categorylist[i].recommand = Math.round(4 + 0.5 * (1 + 9 * (categorylist[i].recommand - min)/(max - min)));
+                console.log(categorylist[i].recommand)
             }
         } catch (e) {
             console.log(e);
         }
+        console.log(categorylist);
         this.setState({
             cur_mountain: null,
             user: user,
             categorylist: categorylist
-        })
+        });
     }
 
     handleClick(i){
@@ -227,7 +230,7 @@ class MainPage extends React.Component {
                         </header>
                         <div className='mainpage_body'>
                             <div className='mountainsdiv'>
-                                <Mountains parent={this}/>
+                                <Mountains parent={this} categoryinfo={this.state.categorylist}/>
                             </div>
                             <div className='videosdiv'>
                                 <Videos categoryinfo={this.state.categorylist} index={this.state.cur_mountain} user={this.state.user}/>

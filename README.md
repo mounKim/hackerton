@@ -48,12 +48,13 @@
 conda create -n ott python=3.8
 ```
 ```
-pip install django==3.2 psycopg2-binary django-cors-headers whitenoise pillow
+conda activate ott
+pip install -r requirements.txt
 ```
 
 # terminal 1: run frontend
 ```
-cd fron/sanplayer/
+cd front/sanplayer/
 npm install
 npm start
 ```

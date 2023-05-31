@@ -87,9 +87,9 @@
 
 .mainpage_div .mountainname {
     position: relative;
-    font-size: 20;
     color: white;
     bottom: 20%;
+    text-align: center;
 }
 
 .mainpage_div .thumbnail {
@@ -134,12 +134,12 @@
     line-height: 2;
     position: relative;
     left: -20%;
-    top: 4%;
+    top: 10%;
 }
 
 .mainpage_div .videoscroll {
     overflow:auto;
-    background-color: #C7EBFF;
+    background-color: #7a4e4eee;
 }
 
 .mainpage_div .videodiv {
