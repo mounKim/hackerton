@@ -146,3 +146,11 @@
     display: inline-block;
     margin: 10px;
 }
+
+.mainpage_div .mypage_div {
+    height: 50px;
+    width: 50px;
+    position: relative;
+    top: 3%;
+    left: 47%;
+}

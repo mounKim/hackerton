@@ -6,6 +6,7 @@ import './mainpage.css';
 import {motion} from 'framer-motion';
 import Cloudimage from './cloud.png';
 import Logo from './logo.png';
+import User from './user.png';
 import axios from 'axios';
 
 var mountain_color = ['#9BB983', '#A3BFA7', '#365912', '#345F12', '#2C3B12'];
@@ -81,8 +82,8 @@ class Videos extends React.Component {
 
 function Mt (props){
     return(
-        <div className='mtwrapdiv' style={{width:props.size * 35, height:props.size * 30, position:'absolute', top: - props.size * 30, left: props.position * 160 - 650}}>
-            <motion.div className='mtdiv' whileHover={{scale:1.2}} style={{zIndex:(100-props.size), width:'100%', height:'100%'}}>
+        <div className='mtwrapdiv' style={{width:props.size * 35, height:props.size * 30, position:'absolute', top: - props.size * 30, left: props.position * 160 - 530 - props.size * 17.5}}>
+            <motion.div className='mtdiv' whileHover={{scale:1.2}} style={{zIndex:props.selected?999:(100-props.size), width:'100%', height:'100%'}}>
                 <button className='mountainbutton' onClick={props.onClick} style={{backgroundColor:props.selected?mountain_color[4]:props.color}}>
                 </button>
             </motion.div>
@@ -103,7 +104,7 @@ class Mountains extends React.Component {
             return <div />;
         }
         else{
-            return <Mt className='mt' onClick={() => this.props.parent.handleClick(i)} size={this.props.categoryinfo[i].recommand} selected={(this.props.cur_mountain === i)} position={i} name={this.props.categoryinfo[i].name} color={mountain_color[color_index[i]]}/>
+            return <Mt className='mt' onClick={() => this.props.parent.handleClick(i)} size={this.props.categoryinfo[i].recommand} selected={(this.props.parent.state.cur_mountain === i)} position={i} name={this.props.categoryinfo[i].name} color={mountain_color[color_index[i]]}/>
         }
     }
 
@@ -183,6 +184,11 @@ class MainPage extends React.Component {
                 <div className='mainpage_div' onClick={this.handleLogin}>
                     <Loading condition={this.state.categorylist === null}>
                         <header className='mainpage_header'>
+                            <div className='mypage_div'>
+                                <Link to="/mypage">
+                                    <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
+                                    </Link>
+                            </div>
                             <div className="logo_div">
                                 <motion.img src={Logo} className="logo" alt="logo"
                                     animate={{scale: [0, 1, 1, 1, 1, 1, 1, 1, 1], rotateZ: [0, 240, 360, 360, 360, 360, 360, 360, 360]}}
