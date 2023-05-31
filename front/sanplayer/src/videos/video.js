@@ -107,14 +107,18 @@ class Video_comp extends React.Component {
             videoid: videoid
         });
 
-        const video = document.getElementsByTagName('video');
+        const video = document.getElementById('video');
         const hls = new Hls();
+    
         hls.loadSource(link);
         hls.attachMedia(video); 
         hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
             console.log(
               '>>>>>>>>>>>> manifest loaded, found ' + data.levels.length + ' quality level');
-            video.play();
+                video.muted = true;
+                var playPromise = video.play();
+                if (playPromise !== undefined) { playPromise.then((_) => {}).catch((error) => {}); }
+                video.muted = false;
           });    
         this.hlsRef = hls;
         hls.on(Hls.Events.FRAG_LOADED, function(event, data) {
@@ -177,7 +181,7 @@ class Video_comp extends React.Component {
                         <button className='btn' onClick={this.handleZeroClick}>Level 0</button>
                         <button className='btn' onClick={this.handleAutoClick}>Auto</button>
                     </div>
-                    <video ref={this.videoRef} controls height={720} />
+                    <video payload="" id="video"></video>
                     <button>배속</button>
                     <button>해상도</button>
                     <button onClick={this.handleSave}>찜하기</button>
