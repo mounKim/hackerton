@@ -24,6 +24,7 @@ class Video_comp extends React.Component {
     async componentDidMount() {
         var user = sessionStorage.getItem('user_id');
         var link = null;
+        var video_name = null;
         const videoid = this.props.param.id;
         
         try {
@@ -41,8 +42,10 @@ class Video_comp extends React.Component {
         try {
             await axios.get(`http://127.0.0.1:8000/videos/`)
             .then(function(response) {
-                // console.log(response.data[videoid - 1])
+                console.log('******************************');
+                console.log(response.data[videoid - 1]);
                 var cur_video = response.data[videoid - 1];
+                video_name = cur_video.video_name;
                 link = cur_video.video_url;
             })
         } catch(e) {
@@ -52,7 +55,8 @@ class Video_comp extends React.Component {
         this.setState({
             user: user,
             link: link,
-            videoid: videoid
+            videoid: videoid,
+            name: video_name
         });
 
         const video = document.getElementById('video');
@@ -75,7 +79,7 @@ class Video_comp extends React.Component {
                 console.log('Video is VOD');
                 this.type = 'vod';
             }
-            console.log('>>>>>>>>>>>> manifest loaded, found ' + data.levels.length + ' quality level');
+            // console.log('>>>>>>>>>>>> manifest loaded, found ' + data.levels.length + ' quality level');
             // console.log(hls);
             optionDropdown.innerHTML = '';
             for (let i = 0; i <= data.levels.length; i++) {
@@ -112,21 +116,21 @@ class Video_comp extends React.Component {
         var bufferHealthData = [];
         var segmentDurationData = [];
         hls.on(Hls.Events.FRAG_LOADED, async function(event, data) {
-            console.log('=========================================================');
-            console.log('>>>>>>>>>>>> Estimated bandwidth:', hls.bandwidthEstimate + ' bps');   
+            // console.log('=========================================================');
+            // console.log('>>>>>>>>>>>> Estimated bandwidth:', hls.bandwidthEstimate + ' bps');   
             var index = hls.currentLevel;
             var level = hls.levels[index];
-            console.log('>>>>>>>>>>>> currentLevel:', hls.currentLevel);
-            console.log('>>>>>>>>>>>> levels:', hls.levels);
-            console.log('>>>>>>>>>>>> loadLevel:', hls.loadLevel);
+            // console.log('>>>>>>>>>>>> currentLevel:', hls.currentLevel);
+            // console.log('>>>>>>>>>>>> levels:', hls.levels);
+            // console.log('>>>>>>>>>>>> loadLevel:', hls.loadLevel);
             if (level) {
                 if (level.height) {
-                    console.log('>>>>>>>>>>>> Selected resolution:', level.height + 'p');
+                    // console.log('>>>>>>>>>>>> Selected resolution:', level.height + 'p');
                 }
                 if (level.bitrate) {      
-                    console.log('>>>>>>>>>>>> Selected bandwidth:', Math.round(level.bitrate / 1000) + ' kbps');
+                    // console.log('>>>>>>>>>>>> Selected bandwidth:', Math.round(level.bitrate / 1000) + ' kbps');
                     if (index !== -1 && index >=0) {
-                        console.log('>>>>>>>>>>>> Selected bandwidth:', hls.levels[index].attrs.BANDWIDTH + ' bps');
+                        // console.log('>>>>>>>>>>>> Selected bandwidth:', hls.levels[index].attrs.BANDWIDTH + ' bps');
                     }    
                 }
                 // await axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
@@ -146,14 +150,14 @@ class Video_comp extends React.Component {
             segmentDurationData.push(frag.duration);//
 
             // Log the collected data
-            console.log('---------------- chart data ------------------')
-            console.log(frag)
+            // console.log('---------------- chart data ------------------')
+            // console.log(frag)
             // console.log('Download Bitrate:', downloadBitrateData);
             // console.log('Selected Bitrate:', selectedBitrateData);
-            console.log('Buffering Start:', bufferingStartData);
-            console.log('Buffering End:', bufferingEndData);
+            // console.log('Buffering Start:', bufferingStartData);
+            // console.log('Buffering End:', bufferingEndData);
             // console.log('Buffer Health:', bufferHealthData);
-            console.log('Segment Duration:', segmentDurationData);
+            // console.log('Segment Duration:', segmentDurationData);
 
 
 
@@ -224,6 +228,7 @@ class Video_comp extends React.Component {
                         <Link to="/mainpage">
                             <button id="home">MAINPAGE</button>
                         </Link>
+                        <div id="info">{this.state.name}</div>
                         <video controls payload="" id="video"></video>
                         <div className='container'>
                             <button className='btn' onClick={this.start}>재생</button>

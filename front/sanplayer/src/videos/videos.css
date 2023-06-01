@@ -34,6 +34,14 @@
     left: 300px;
 }
 
+.video_header #info {
+    position: absolute;
+    font-size: 50px;
+    font-weight: 700;
+    top: 250px;
+    left: 500px;
+}
+
 .video_header .container {
     display: flex;
     flex-direction: row;
