@@ -8,8 +8,7 @@ import {
 import Hls from 'hls.js';
 import User from '../user.png';
 import Main from '../logo.png';
-import {BsPauseCircle, BsPlayCircle, BsHeart} from 'react-icons/bs'
-
+import {BsPauseCircle, BsPlayCircle, BsHeart, BsHeartFill} from 'react-icons/bs'
 
 var downloadBitrateData = [];
 var selectedBitrateData = [];
@@ -21,7 +20,7 @@ var sq_id = null;
 
 const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms))
-  }
+}
 
 class Video_comp extends React.Component {
     state = {
@@ -31,7 +30,8 @@ class Video_comp extends React.Component {
         name: null,
         category: null,
         current_playing: false,
-        recom_list: (<div> </div>)
+        recom_list: (<div> </div>),
+        like: false,
     };
     constructor(props) {
         super(props);
@@ -61,9 +61,9 @@ class Video_comp extends React.Component {
         try {
             await axios.get(`http://127.0.0.1:8000/videos/`)
             .then(function(response) {
-                // console.log('******************************');
+                // console.log(response);
                 var cur_video = response.data[videoid - 1];
-                video_name = cur_video.video_name;
+                video_name = "<" + cur_video.video_name + ">";
                 video_url = cur_video.video_category[0]['category'];
                 link = cur_video.video_url;
             })
@@ -73,28 +73,35 @@ class Video_comp extends React.Component {
 
         var recom_data = null;
         try {
-            await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
-            .then(function(response) {
-                recom_data = response.data.slice(0, 3);
-            });   
-            recom_data.map((d) => {
-                d.link = "./" + d.id;
-                d.img_link = "http://127.0.0.1:8000/" + d.image;
-            })
-            var recom_list = recom_data.map((d) => 
-                <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br />{d.video_name}</div>); 
-            this.setState({
-                user: user,
-                link: link,
-                videoid: videoid,
-                name: video_name,
-                category: video_url,
-                current_playing: false,
-                recom_list: recom_list
-            });
-        } catch(e) {
-            console.error(e);
+        await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
+        .then(function(response) {
+            recom_data = response.data;
+        });   
+        var recom_data2 = [];
+        for(var i = 0; i < recom_data.length; i++) {
+            if(videoid != recom_data[i]['id']) {
+                recom_data2.push(recom_data[i]);
+            }
         }
+        // console.log(recom_data2);
+        recom_data2.map((d) => {
+            d.link = "./" + d.id;
+            d.img_link = "http://127.0.0.1:8000/" + d.image;
+        })
+        var recom_list = recom_data2.map((d) => 
+            <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br />{d.video_name}</div>); 
+        this.setState({
+            user: user,
+            link: link,
+            videoid: videoid,
+            name: video_name,
+            category: video_url,
+            current_playing: false,
+            recom_list: recom_list
+        });
+    } catch(e) {
+        console.error(e);
+    }
 
         const video = document.getElementById('video');
         const hls = new Hls();
@@ -213,11 +220,16 @@ class Video_comp extends React.Component {
     }; 
 
     handleSave = async () => {
-        const { user, videoid } = this.state;
+        if(this.state.like){
+            this.setState({like: false});
+        } else {
+            this.setState({like: true});
+        }
         try {
             await axios.post('http://127.0.0.1:8000/saved_video/', {
-                'user_id': user,
-                'video_id': videoid
+                'user_id': this.state.user,
+                'video_id': this.state.videoid,
+                'like': this.state.like
             })
             .then(function(response) {
                 // console.log(response);
@@ -251,6 +263,7 @@ class Video_comp extends React.Component {
                 category: this.state.category,
                 current_playing: false,
                 recom_list: this.state.recom_list,
+                like: this.start.like,
             });
         } else {
             this.start();
@@ -262,6 +275,7 @@ class Video_comp extends React.Component {
                 category: this.state.category,
                 current_playing: true,
                 recom_list: this.state.recom_list,
+                like: this.start.like,
             })
         }
     }
@@ -313,19 +327,13 @@ class Video_comp extends React.Component {
                                 <img src={Main} className="mainpagelogo" alt="mainpagelogo" style={{width:"100%", height:"100%",}}/>
                             </Link>
                         </div>
-                        <div className='mypage_div'>
-                            <Link to="/mypage">
-                                <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
-                            </Link>
-                        </div>
-                        <h2 className='title' style={{fontSize:'35px'}}>{this.state.user === null?'로그인해주세요!':'Sanplayer'}</h2>
-                        
-                        <div id="info">{this.state.name === null ? 'Loading...' : this.state.name}</div>
+                        <h2 className="my_h2">{this.state.user === null?'로그인해주세요!':'Sanplayer'}</h2>            
+                        <h3 className="my_h3">{this.state.name === null ? 'Loading...' : this.state.name}</h3>
                         <div className='video_container'>
                             <video controls payload="" id="video"></video>
                             <div className='container'>
                                 <button className='btn_play' onClick={this.handle_play}>{this.state.current_playing?<BsPauseCircle />:<BsPlayCircle />}</button>
-                                <button className='btn_like' onClick={this.handleSave}><BsHeart /></button>
+                                <button className='btn_like' onClick={this.handleSave}>{this.state.like?<BsHeartFill />:<BsHeart />}</button>
                                 <select id="optionSpeed" onChange={this.handleSpeed} defaultValue="normal">
                                     <option value="slow">0.5</option>
                                     <option value="slow_normal">0.75</option>
@@ -340,7 +348,12 @@ class Video_comp extends React.Component {
                         </div>
                     </div>
                     <div className='recommend'>
-                        <h2 id="recom_h2">추천 동영상</h2>
+                        <div className='mypage_div'>
+                            <Link to="/mypage">
+                                <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
+                            </Link>
+                        </div>
+                        <h2 className="my_h2">추천 동영상</h2>
                         {this.state.recom_list}
                     </div>
                 </div>
