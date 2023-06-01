@@ -1,48 +1,52 @@
 .video_header {
-    width: 100%;
-    height: 100%;
     background-color: #C7EBFF;
+    min-height: 60vh;
+    display: flex;
+    width: 100%;
+    height:100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
     color: white;
+    overflow: hidden;
 }
 
-.video_header #video {
-    position: absolute;
-    left: 50px;
-    top: 50px;
-    width: 70%;
-    height: 70%;
+.mainpage_div .videolist {
+    width: 100%;
+    height:100%;
+
+    background-color: #C7EBFF;
 }
 
-.video_header button {
-    display: inline;
+.video_header .videoscroll {
+    overflow:auto;
+    background-color: #C7EBFF;
+}
+
+.video_header .selectedmountain {
+    line-height: 2;
     position: relative;
-    font-size: 50px;
-    top: 1200px;
+    left: -20%;
+    top: 10%;
 }
 
-.video_header h1 {
-    text-align: left;
-    padding: 50px;
-    font-size: 50px;
-    border-bottom: 1px dashed black;
-}
-
-.video_header h2 {
-    margin: 0;
-    text-align: left;
-    padding: 50px;
-    font-size: 40px;
+.video_header .videodiv {
+    display: inline-block;
+    margin: 10px;
 }
 
 .video_header .category {
-    display: flex;
-    flex-direction: row;
+    position: relative;
+    white-space: nowrap;
+    top: -36px;
+    width: 100%;
+    height:384px;
 }
 
-.video_header .item {
-    margin: 10px 50px;
-}
-
-.video_header a {
-    display: inline-block;
+.video_header .thumbnail {
+    width: 280px;
+    height: 167px;
+    border-radius: 5%;
+    margin: 5px;
 }
