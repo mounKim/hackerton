@@ -10,7 +10,7 @@ urlpatterns = [
     path('video_category/', VideoCategoryView.as_view()),
     path('user_category/', UserCategoryView.as_view()),
     path('streaming_quality/', StreamingQualityView.as_view()),
-    path('graph/', GraphView.as_view()),
+    path('streaming_quality/<str:pk>/', GraphView.as_view()),
     
 ]
 

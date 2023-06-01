@@ -126,16 +126,11 @@ class StreamingQualityView(APIView):
     def get(self, request):
         user_id = request.GET.dict()['user_id']
         user = User.objects.get(username=user_id)
-        streaming_qualities = StreamingQuality.objects.filter(user_id=user)
-        serializer = StreamingQualitySerializer(streaming_qualities)
+        streaming_qualities = StreamingQuality.objects.filter(user_id_id=user.id)
+        serializer = StreamingQualitySerializer(streaming_qualities, many=True)        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        json_data = json.loads(request.body)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~2")
-        print(json_data)
-        
-        
+    def post(self, request):        
         user_id = request.data.get('user_id')
         video_id = request.data.get('video_id')
         user = User.objects.get(username=user_id)
@@ -143,44 +138,37 @@ class StreamingQualityView(APIView):
         videos = WatchedVideo.objects.filter(user_id = user, video_id = video)
         v = videos[videos.count() -1]
         video_url = video.video_url
-        # bitrate_resource = ['123', '456', '789']
-
         bitrate_resource = request.data.get('bitrate_resource') 
-        # resolution = request.POST.getlist('resolution') <- list에서 안됨
         resolution = request.data.get('resolution') 
-        
-        print("bitrate : ", bitrate_resource)
-        print("resolution : ", resolution)
-        
         streaming_type = request.data.get('streaming_type')
         protocol = request.data.get('protocol')
 
-        # streaming_quality = StreamingQuality(
-        #                                     user_id = user,
-        #                                     video_id = v,
-        #                                     video_url = video_url,
-        #                                     bitrate_resource = bitrate_resource,
-        #                                     resolution = resolution,
-        #                                     streaming_type = streaming_type,
-        #                                     protocol = protocol 
-        #                                 )
+        streaming_quality = StreamingQuality(
+                                            user_id = user,
+                                            video_id = v,
+                                            video_url = video_url,
+                                            bitrate_resource = bitrate_resource,
+                                            resolution = resolution,
+                                            streaming_type = streaming_type,
+                                            protocol = protocol 
+                                        )
 
-        # streaming_quality.save()
-        
-        # return Response({'message': 'Streaming Quality saved successfully', 'id' : streaming_quality.id }, status=status.HTTP_201_CREATED)
-
+        streaming_quality.save()
         return Response({'message': 'Streaming Quality information saved successfully'}, status=status.HTTP_201_CREATED)
     
     
 class GraphView(APIView):
-    def get(self, request):
+    def get(self, request, pk):
         sq_id = request.GET.dict()['sq_id']
         sq = StreamingQuality.objects.get(id=sq_id)
         graph = Graph.objects.get(sq_id=sq)
         serializer = GraphSerializer(graph)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, pk):
+        json_data = json.loads(request.body)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print(json_data)
         sq_id = request.data.get('sq_id')
         sq = StreamingQuality.objects.get(id=sq_id)
         download_bitrate = request.data.get('download_bitrate')
@@ -188,6 +176,7 @@ class GraphView(APIView):
         buffering_start = request.data.get('buffering_start')
         buffering_end = request.data.get('buffering_end')
         segment_duration = request.data.get('segment_duration')
+        
         graph = Graph(
             sq_id = sq,
             download_bitrate = download_bitrate,

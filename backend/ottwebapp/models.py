@@ -67,11 +67,11 @@ class StreamingQuality(models.Model):
 
 class Graph(models.Model):
     sq_id = models.ForeignKey(StreamingQuality, on_delete=models.CASCADE)
-    download_bitrate = models.IntegerField(default=0)
-    selected_bitrate = models.IntegerField(default=0)
-    buffering_start = models.IntegerField(default=0)
-    buffering_end = models.IntegerField(default=0)
-    segment_duration = models.IntegerField(default=0)
+    download_bitrate = ArrayField(models.CharField(max_length=10), blank=True)
+    selected_bitrate = ArrayField(models.CharField(max_length=10), blank=True)
+    buffering_start = ArrayField(models.CharField(max_length=10), blank=True)
+    buffering_end = ArrayField(models.CharField(max_length=10), blank=True)
+    segment_duration = ArrayField(models.CharField(max_length=10), blank=True)
 
     def __str__(self):
         return f"sq_id: {self.sq_id}"

@@ -7,7 +7,6 @@ video::-webkit-media-controls-play-button {
 }
 
 .video_header {
-    margin-top: 50px;
     width: 100%;
     height: 1400px;
     background-color: #C7EBFF;
@@ -23,10 +22,9 @@ video::-webkit-media-controls-play-button {
 }
 
 .video_header #video {
-    margin-top: 30px;
-    margin-left: 100px;
-    width: 70%;
-    height: 70%;
+    width: 800px;
+    height: 450px;
+    pointer-events: none;
 }
 
 .video_header #mypage {
@@ -44,18 +42,12 @@ video::-webkit-media-controls-play-button {
 }
 
 .video_header #info {
-    position: absolute;
-    font-size: 50px;
-    font-weight: 700;
-    top: 250px;
-    left: 350px;
+    font-size: 30px;
 }
 
 .video_header .container {
     display: flex;
     flex-direction: row;
-    margin-left: 100px;
-    margin-top: 100px;
 }
 
 .video_header .recommend {
@@ -64,16 +56,27 @@ video::-webkit-media-controls-play-button {
     flex-direction: column;
 }
 
-.video_header button {
+.video_header .btn_like {
     padding: 10px;
-    margin: 50px;
-    margin-top: 20px;
-    font-size: 50px;
+    font-size: 30px;
+    background-color: transparent;
+    border: transparent;
+}
+
+.video_header .btn_play {
+    padding: 10px;
+    font-size: 30px;
+    background-color: transparent;
+    border: transparent;
+}
+
+.video_header .recom_img {
+    width: 100px;
+    height: 100px;
+    margin: 20px;
 }
 
 .video_header select {
-    padding: 10px;
-    margin: 50px;
     font-size: 50px;
 }
 
@@ -102,4 +105,41 @@ video::-webkit-media-controls-play-button {
 
 .video_header a {
     display: inline-block;
+}
+
+.video_header .mypage_div {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 3%;
+    left: 95%;
+}
+
+.video_header .mainpage_div {
+
+    height: 100px;
+    width: 130px;
+    position: absolute;
+    top: 2%;
+    left: 5%;
+}
+
+.video_header .video_container {
+    width: 800px;
+    height: 520px;
+}
+
+.video_header #optionSpeed {
+    font-size: 25px;
+    background-color: transparent;
+    width: 70px;
+    text-align: center;
+}
+
+.video_header #optionDropdown {
+    font-size: 25px;
+    background-color: transparent;
+    width: 120px;
+    text-align: center;
 }

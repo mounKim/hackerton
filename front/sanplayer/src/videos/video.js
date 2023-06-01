@@ -7,13 +7,25 @@ import {
 } from "react-router-dom";
 import Hls from 'hls.js';
 import User from '../user.png';
+import Main from '../logo.png';
+import {BsPauseCircle, BsPlayCircle, BsHeart} from 'react-icons/bs'
 
+var downloadBitrateData = [];
+var selectedBitrateData = [];
+var bufferingStartData = [];
+var bufferingEndData = [];
+var bufferHealthData = [];
+var segmentDurationData = [];
+var sq_id;
 
 class Video_comp extends React.Component {
     state = {
-        user: null,
+        user: sessionStorage.getItem('user_id'),
         link: null,
         videoid: null,
+        name: null,
+        category: null,
+        current_playing: false,
     };
     constructor(props) {
         super(props);
@@ -53,21 +65,35 @@ class Video_comp extends React.Component {
             console.error(e);
         }
 
+        var recom_data = null;
+        await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
+        .then(function(response) {
+            recom_data = response.data.slice(0, 3);
+        });   
+        recom_data.map((d) => {
+            d.link = "./" + d.id;
+            d.img_link = "http://127.0.0.1:8000/" + d.image;
+        })
+        var recom_list = recom_data.map((d) => 
+            <div className='image'><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br />{d.video_name}</div>); 
         this.setState({
             user: user,
             link: link,
             videoid: videoid,
             name: video_name,
-            category: video_url
+            category: video_url,
+            current_playing: false,
+            recom_list: recom_list
         });
 
         const video = document.getElementById('video');
         const hls = new Hls();
         const optionDropdown = document.getElementById('optionDropdown');
 
-
         let bitrate_resource = [];
         let resolution = [];
+
+        
 
         hls.loadSource(link);
         hls.attachMedia(video); 
@@ -87,12 +113,15 @@ class Video_comp extends React.Component {
                 const option = document.createElement('option');
                 option.value = i;
                 console.log(data.levels[i])
-                option.textContent = `해상도 ${data.levels[i]['height']}`;
+                option.textContent = `${data.levels[i]['height']}p`;
                 optionDropdown.appendChild(option);
                 
                 bitrate_resource.push(`${data.levels[i]['bitrate']}`);
                 resolution.push(`${data.levels[i]['width']}X${data.levels[i]['height']}`);
             }
+
+            hls.currentLevel = 0;
+            
             await axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
                 'user_id': user,
                 'video_id': videoid,
@@ -101,18 +130,23 @@ class Video_comp extends React.Component {
                 'streaming_type' : this.type,
                 'protocol' : 'hls',
             });
+            try {
+                await axios.get(`http://127.0.0.1:8000/streaming_quality/?user_id=`+user)
+                .then(function(response) {
+                    var cur_sq = response.data[response.data.length -1];
+                    sq_id = cur_sq['id'];
+                })
+            } catch(e) {
+                console.error(e);
+            }
         });   
 
         console.log(hls);
 
         this.hlsRef = hls;
 
-        var downloadBitrateData = [];
-        var selectedBitrateData = [];
-        var bufferingStartData = [];
-        var bufferingEndData = [];
-        var bufferHealthData = [];
-        var segmentDurationData = [];
+        
+
         hls.on(Hls.Events.FRAG_LOADED, async function(event, data) {
             // console.log('=========================================================');
             // console.log('>>>>>>>>>>>> Estimated bandwidth:', hls.bandwidthEstimate + ' bps');   
@@ -131,41 +165,47 @@ class Video_comp extends React.Component {
                         // console.log('>>>>>>>>>>>> Selected bandwidth:', hls.levels[index].attrs.BANDWIDTH + ' bps');
                     }    
                 }
-                // await axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
-                //     'resolution': level.height,
-                //     'bitrate': Math.round(level.bitrate / 1000)
-                // })
             }
 
             var frag = data.frag;
-
+            // console.log("fragment  : ", frag);
             // Collect the required data
-            downloadBitrateData.push(frag.stats.bw);
-            selectedBitrateData.push(frag.stats.bitrate);
-            bufferingStartData.push(frag.stats.buffering['start']);//
-            bufferingEndData.push(frag.stats.buffering['end']);//
-            bufferHealthData.push(frag.stats.len);
+            downloadBitrateData.push(frag.stats.total / frag.duration);
+            selectedBitrateData.push(hls.currentLevel);
+            bufferingStartData.push(frag.stats.buffering.start);//
+            bufferingEndData.push(frag.stats.buffering.end);//
+            bufferHealthData.push(frag.stats.loading.end - frag.stats.loading.start);
             segmentDurationData.push(frag.duration);//
 
-            // Log the collected data
-            // console.log('---------------- chart data ------------------')
-            // console.log(frag)
-            // console.log('Download Bitrate:', downloadBitrateData);
-            // console.log('Selected Bitrate:', selectedBitrateData);
-            // console.log('Buffering Start:', bufferingStartData);
-            // console.log('Buffering End:', bufferingEndData);
-            // console.log('Buffer Health:', bufferHealthData);
-            // console.log('Segment Duration:', segmentDurationData);
-
-
-
         });
+
+        // window.addEventListener('beforeunload', this.handleBeforeUnload);
     }
 
-    async handleSave(event) {
-        event.preventDefault();
-        var user = sessionStorage.getItem('user_id');
-        const videoid = this.props.param.id;
+    // componentWillUnmount() {
+    //     console.log("remove beforeunload eventlistner");
+    //     window.removeEventListener('beforeunload', this.handleBeforeUnload);
+    // }
+
+    handleBeforeUnload = async () => {
+        console.log('Unload!!!!!!!');
+
+        try {
+            await axios.post('http://127.0.0.1:8000/streaming_quality/'+sq_id+'/', {
+                'sq_id':sq_id,
+                'download_bitrate' : downloadBitrateData,
+                'selected_bitrate' : selectedBitrateData,
+                'buffering_start' : bufferingStartData,
+                'buffering_end' : bufferingEndData,
+                'segment_duration' : segmentDurationData,
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }; 
+
+    handleSave = async () => {
+        const { user, videoid } = this.state;
         try {
             await axios.post('http://127.0.0.1:8000/saved_video/', {
                 'user_id': user,
@@ -179,10 +219,6 @@ class Video_comp extends React.Component {
         }
     }
 
-    async handlResolution(event){
-        event.preventDefault();
-    }
-
     start = () => {
         const video = document.getElementById('video');
         video.muted = true;
@@ -194,6 +230,30 @@ class Video_comp extends React.Component {
         const video = document.getElementById('video');
         video.muted = true;
         video.pause();
+    }
+
+    handle_play = () => {
+        if(this.state.current_playing == true) {
+            this.stop();
+            this.setState({
+                user: this.state.user,
+                link: this.state.link,
+                videoid: this.state.videoid,
+                name: this.state.name,
+                category: this.state.category,
+                current_playing: false,
+            });
+        } else {
+            this.start();
+            this.setState({
+                user: this.state.user,
+                link: this.state.link,
+                videoid: this.state.videoid,
+                name: this.state.name,
+                category: this.state.category,
+                current_playing: true,
+            })
+        }
     }
 
     handleSpeed = () => {
@@ -229,42 +289,50 @@ class Video_comp extends React.Component {
         this.hlsRef.currentLevel = -1; // Auto resolution switching
     };
 
+    async componentWillUnmount(){
+        await this.handleBeforeUnload();
+        alert('closing tab');
+    }
+
     render() {
         return(
             <ConditionalLink to="../login/" condition={this.state.user === null} style={{ textDecoration: "none" }}>
                 <div className="video_header">
                     <div className="wrapper">
-                        <div id="mypage">
+                        <div className='mainpage_div'>
+                            <Link to="/mainpage">
+                                <img src={Main} className="mainpagelogo" alt="mainpagelogo" style={{width:"100%", height:"100%",}}/>
+                            </Link>
+                        </div>
+                        <div className='mypage_div'>
                             <Link to="/mypage">
                                 <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
                             </Link>
-                        </div>                        
-                        <Link to="/mainpage">
-                            <button id="home">MAINPAGE</button>
-                        </Link>
-                        <div id="info">{this.state.name}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        {this.state.category}</div>
-                        <video controls payload="" id="video"></video>
-                        <div className='container'>
-                            <button className='btn' onClick={this.start}>재생</button>
-                            <button className='btn' onClick={this.stop}>일시정지</button>
-                            <button className='btn' onClick={this.handleSave}>찜하기</button>
-                            <select id="optionSpeed" onChange={this.handleSpeed}>
-                                <option value="slow">0.5</option>
-                                <option value="slow_normal">0.75</option>
-                                <option value="normal" selected>1.0</option>
-                                <option value="norm al_high">1.25</option>
-                                <option value="high">1.5</option>
-                            </select>
-                            <select id="optionDropdown" onChange={this.handleLevelClick}>
-                                <option value="normal">720p</option>
-                            </select>
+                        </div>
+                        <h2 className='title' style={{fontSize:'35px'}}>{this.state.user === null?'로그인해주세요!':'Sanplayer'}</h2>
+                        
+                        <div id="info">{this.state.name === null ? 'Loading...' : this.state.name}</div>
+                        <div className='video_container'>
+                            <video controls payload="" id="video"></video>
+                            <div className='container'>
+                                <button className='btn_play' onClick={this.handle_play}>{this.state.current_playing?<BsPauseCircle />:<BsPlayCircle />}</button>
+                                <button className='btn_like' onClick={this.handleSave}><BsHeart /></button>
+                                <select id="optionSpeed" onChange={this.handleSpeed} defaultValue="normal">
+                                    <option value="slow">0.5</option>
+                                    <option value="slow_normal">0.75</option>
+                                    <option value="normal">1.0</option>
+                                    <option value="norm al_high">1.25</option>
+                                    <option value="high">1.5</option>
+                                </select>
+                                <select id="optionDropdown" onChange={this.handleLevelClick} defaultValue="normal">
+                                    <option value="" selected disabled hidden>해상도</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div className='recommend'>
                         <h2 id="recom_h2">추천 동영상</h2>
-
+                        {this.state.recom_list}
                     </div>
                 </div>
             </ConditionalLink>

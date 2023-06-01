@@ -92,15 +92,17 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         # 'ENGINE' : 'django.db.backends.postgresql',
+        
         # 'NAME' : 'SanPlayer', # server 이름 말고 DB 이름
         # 'USER' : 'postgres',
         # 'PASSWORD' : 'postgres',
         # 'HOST' : 'localhost',
         # 'PORT' : 5432,
+        
         'ENGINE' : 'django.db.backends.postgresql_psycopg2',
-        'NAME' : 'vfvatzrg', # server 이름 말고 DB 이름
-        'USER' : 'vfvatzrg',
-        'PASSWORD' : '3ADGMJZouUQm2T4cZ30i_OS0C1HpAtUO',
+        'NAME' : 'opuasmgb', # server 이름 말고 DB 이름
+        'USER' : 'opuasmgb',
+        'PASSWORD' : 'cI311gVZCpMIO-cSlMNKp-92RtSHyh1s',
         'HOST' : 'arjuna.db.elephantsql.com',
         'PORT' : 5432,
     }

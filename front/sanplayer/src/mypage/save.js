@@ -40,7 +40,7 @@ class SaveBlock extends React.Component {
                     {this.state.save_list}
                 </div>
             </div>
-        )
+        ) 
     }
 }
 

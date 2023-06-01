@@ -20,6 +20,11 @@ class CategorySerializer(serializers.ModelSerializer):
 #         fields = ('user_id',
 #                   'video_id',
 #                   'video_category')
+
+class WatchedVideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WatchedVideo
+        fields = ('updated_at',)
         
 class VideoListSerializer(serializers.ModelSerializer):
     video_category = CategorySerializer(many=True, read_only=True)
@@ -41,10 +46,11 @@ class UserCategorySerializer(serializers.ModelSerializer):
         fields = ('score1', 'score2', 'score3', 'score4', 'score5', 'score6', 'score7', 'score8')
 
 class StreamingQualitySerializer(serializers.ModelSerializer):
-    video_id = VideoListSerializer(many=False, read_only=True)
+    video_id = WatchedVideoSerializer(many=False, read_only=True)
+    
     class Meta:
         model = StreamingQuality
-        fields = ('video_id','video_url', 'bitrate_resource', 'resolution', 'streaming_type', 'protocol')
+        fields = '__all__'
 
 class GraphSerializer(serializers.ModelSerializer):
     class Meta:

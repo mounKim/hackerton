@@ -156,9 +156,13 @@ class MainPage extends React.Component {
                     categorylist[i].video = response_cat.data;
                 });
             }
-            for(let i = 0; i < 8; i++){
-                categorylist[i].recommand = Math.round(4 + 0.5 * (1 + 9 * (categorylist[i].recommand - min)/(max - min)));
-                console.log(categorylist[i].recommand)
+            if(max == min){
+                for(let i = 0; i < 8; i++)
+                    categorylist[i].recommand = 5;
+            }
+            else{
+                for(let i = 0; i < 8; i++)
+                    categorylist[i].recommand = Math.round(4 + 0.5 * (1 + 9 * (categorylist[i].recommand - min)/(max - min)));
             }
         } catch (e) {
             console.log(e);
