@@ -5,13 +5,50 @@
     color: white;
 }
 
+.mypage_header #home {
+    position: absolute;
+    top: 50px;
+    right: 100px;
+}
+
+.mypage_header #mountain1 {
+    position: absolute;
+    top: 50px;
+    right: 300px;
+}
+
+.mypage_header #mountain2 {
+    position: absolute;
+    top: 50px;
+    right: 400px;
+}
+
+.mypage_header #mountain3 {
+    position: absolute;
+    top: 50px;
+    right: 500px;
+}
+
+.mypage_header .wrapper {
+    padding: 15px;
+}
+
 .mypage_header .container {
     display: flex;
     flex-direction: row;
+    padding-left: 20px;
 }
 
-.mypage_header .item {
-    margin: 10px 50px;
+.mypage_header .image {
+    padding: 5px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.mypage_header img {
+    margin: 10px;
+    width: 80px;
+    height: 80px;
 }
 
 .mypage_header button {
@@ -23,24 +60,20 @@
 
 .mypage_header h1 {
     text-align: left;
-    padding: 50px;
-    font-size: 50px;
+    padding: 30px;
+    font-size: 30px;
     border-bottom: 1px dashed black;
 }
 
 .mypage_header h2 {
     margin: 0;
     text-align: left;
-    padding: 50px;
-    font-size: 40px;
+    padding: 15px 30px;
+    font-size: 20px;
 }
 
 .mypage_header h3 {
     font-size: 20px;
-}
-
-.mypage_header a {
-    display: inline-block;
 }
 
 .mypage_header #video {
