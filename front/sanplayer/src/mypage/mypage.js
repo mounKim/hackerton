@@ -12,13 +12,19 @@ import Logo from '../logo.png';
 const Mypage = ({items}) => {
     return (
         <div className="mypage_header">
-            <h1>마이페이지</h1>
-            <Link to="/mainpage">
-                <button id="home">MAINPAGE</button>
-            </Link>
-            <img id="mountain1" src={Logo} />
-            <img id="mountain2" src={Logo} />
-            <img id="mountain3" src={Logo} />
+            <div className='head'>
+                <h1>마이페이지</h1>
+                <div className='mountains'>
+                    <img id="mountain1" src={Logo} />
+                    <img id="mountain2" src={Logo} />
+                    <img id="mountain3" src={Logo} />
+                </div>
+                <Link to="/mainpage">
+                    <button id="home">MAINPAGE</button>
+                </Link>
+
+            </div>
+
             <View items={items[0]}/>
             <Data />
             <Save items={items[1]}/>

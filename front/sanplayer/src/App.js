@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, useNavigate, useParams, Switch } from 're
 import Mypage from './mypage/mypage';
 import view from './mypage/view_record';
 import save from './mypage/save_record';
+import Chart from './mypage/chart';
+import Graph from './mypage/graph';
 import Video from './videos/video';
 import Videos from './videos/videos';
 import Login from './login';
@@ -20,6 +22,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/mypage" element={<Mypage items={[views, saves]}/>}></Route>
+        <Route path="/chart" element={<Chart/>}></Route>
+        <Route path="/chart/:id" element={<Graph/>}></Route>
         <Route path="/videos" element={<Videos/>}></Route>
         <Route path="/videos/:id" element={<Video />}></Route>
         {/* <Switch>

@@ -3,30 +3,7 @@
     height: 100%;
     background-color: #C7EBFF;
     color: white;
-}
-
-.mypage_header #home {
-    position: absolute;
-    top: 50px;
-    right: 100px;
-}
-
-.mypage_header #mountain1 {
-    position: absolute;
-    top: 50px;
-    right: 300px;
-}
-
-.mypage_header #mountain2 {
-    position: absolute;
-    top: 50px;
-    right: 400px;
-}
-
-.mypage_header #mountain3 {
-    position: absolute;
-    top: 50px;
-    right: 500px;
+    position:relative;
 }
 
 .mypage_header .wrapper {
@@ -37,6 +14,7 @@
     display: flex;
     flex-direction: row;
     padding-left: 20px;
+    overflow: auto;
 }
 
 .mypage_header .image {
@@ -53,23 +31,25 @@
 
 .mypage_header button {
     display: block;
-    font-size: 30px;
-    margin-left: 50px;
-    padding: 10px;
-}
-
-.mypage_header h1 {
-    text-align: left;
-    padding: 30px;
-    font-size: 30px;
-    border-bottom: 1px dashed black;
+    font-size: 22px;
+    padding: 20px;
+    color: rgb(255, 255, 255);
+    border-radius: 30px;
+    text-align: center;
+    transition: top .01s linear;
+    background-color: #82e8d3;
+    box-shadow: 0 0 0 1px #7fccde inset,
+          0 0 0 2px rgba(255,255,255,0.15) inset,
+          0 8px 0 0 rgba(102, 164, 178, .6),
+          0 8px 0 1px rgba(0,0,0,.4),
+          0 8px 8px 1px rgba(0,0,0,0.5);
 }
 
 .mypage_header h2 {
     margin: 0;
     text-align: left;
     padding: 15px 30px;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .mypage_header h3 {
@@ -79,4 +59,38 @@
 .mypage_header #video {
     width: auto;
     display: inline;
+}
+
+.head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding:20px;
+}
+
+.head h1 {
+    margin: 0;
+    text-align: left;
+    padding: 20px;
+    margin-left : 20px;
+    font-size: 40px;
+    border-bottom: 1px dashed rgb(43, 45, 112);
+    text-shadow: 3px 3px 6px  rgb(43, 86, 112);
+}
+
+.head #home{
+    font-size: 40px;
+    font-size: 22px;
+    margin-right : 20px;
+    padding: 20px;
+    color: white;
+    border-radius: 30px;
+    text-align: center;
+    transition: top .01s linear;
+    background-color: #7fccde;
+    box-shadow: 0 0 0 1px #7fccde inset,
+          0 0 0 2px rgba(255,255,255,0.15) inset,
+          0 8px 0 0 rgba(102, 164, 178, .6),
+          0 8px 0 1px rgba(0,0,0,.4),
+          0 8px 8px 1px rgba(0,0,0,0.5);
 }

@@ -7,6 +7,7 @@ import {
 
 class ViewBlock extends React.Component {
     state = {
+        user: null,
         watch_list: null,
     };
     constructor(props) {
@@ -16,6 +17,7 @@ class ViewBlock extends React.Component {
 
     async componentDidMount() {
         var user = sessionStorage.getItem('user_id');
+        this.state.user = user;
         var watch_data = [];
         await axios.get("http://127.0.0.1:8000/watched_video/?user_id="+user)
         .then(function(response) {
@@ -34,7 +36,9 @@ class ViewBlock extends React.Component {
     }
     render() {
         return (
+            
             <div className="wrapper">
+                {this.state.user}
             <h2>동영상 시청 목록</h2>
                 <div className="container">
                     {this.state.watch_list}

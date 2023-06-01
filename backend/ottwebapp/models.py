@@ -63,7 +63,7 @@ class StreamingQuality(models.Model):
     protocol = models.CharField(max_length=5)
 
     def __str__(self):
-        return f"user_id: {self.user_id} | video_id: {self.video_id} | update_at : {self.video_url}"
+        return f"id: {self.id} | user_id: {self.user_id} | video_id: {self.video_id} | update_at : {self.video_url}"
 
 class Graph(models.Model):
     sq_id = models.ForeignKey(StreamingQuality, on_delete=models.CASCADE)

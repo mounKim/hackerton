@@ -53,12 +53,12 @@ function Login() {
           <form method="post" onSubmit={handleSubmit} id="login-form">
             <input type="text" name="userName" value={id} onChange={handleidChange} placeholder="ID" />
             <input type="password" name="userPassword" value={password} onChange={handlepwChange} placeholder="Password" />
-            <label htmlFor="remember-check">
+            {/* <label htmlFor="remember-check">
               <input type="checkbox" id="remember-check" /> 아이디 저장하기
-            </label>
-            <span width="100px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
-            <Link to={"../register"} style={{ fontSize: "16px", textDecoration: "none" }}>회원가입</Link>
+            </label> */}
+            {/* <span width="100px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  */}
             <input type="submit" value="Login"/>
+            <Link to={"../register"} style={{ fontSize: "16px", textDecoration: "none" }}>회원가입</Link>
           </form>
         </div>
       </motion.div>

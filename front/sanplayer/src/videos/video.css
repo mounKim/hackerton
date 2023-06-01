@@ -7,8 +7,9 @@ video::-webkit-media-controls-play-button {
 }
 
 .video_header {
+    margin-top: 20px;
     width: 100%;
-    height: 1400px;
+    height: 100%;
     background-color: #C7EBFF;
     color: white;
     display: flex;
@@ -18,13 +19,16 @@ video::-webkit-media-controls-play-button {
 .video_header .wrapper {
     display: flex;
     flex-direction: column;
-    margin-left: 200px;
+    margin-left: 100px;
+    padding-right: 100px;
+    border-right: thick double #32a1ce;
 }
 
 .video_header #video {
     width: 800px;
     height: 450px;
     pointer-events: none;
+    margin-bottom: 3px;
 }
 
 .video_header #mypage {
@@ -41,57 +45,93 @@ video::-webkit-media-controls-play-button {
     left: 300px;
 }
 
-.video_header #info {
-    font-size: 30px;
-}
-
 .video_header .container {
-    display: flex;
-    flex-direction: row;
+    /* display: flex;
+    flex-direction: row; */
+    position : relative;
 }
 
 .video_header .recommend {
     width: 30%;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 .video_header .btn_like {
-    padding: 10px;
-    font-size: 30px;
+    position: absolute;
+    top:2px;
+    left :65px;
+    padding: 5px;
+    font-size: 35px;
+    color: black;
+    /*color: rgb(255, 47, 141);*/
     background-color: transparent;
     border: transparent;
 }
 
 .video_header .btn_play {
-    padding: 10px;
-    font-size: 30px;
+    position: absolute;
+    left :10px;
+    padding: 5px;
+    font-size: 35px;
     background-color: transparent;
     border: transparent;
 }
 
+select {
+    font-size: 25px;
+    /* width : 50em; */
+    border: 1px solid #aaa;
+    border-radius: .5em;
+    box-shadow: 0 1px 0 1px;
+    margin-left: 5px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.video_header #optionSpeed {
+    position: absolute;
+    top:5px;
+    right:130px;
+    padding: 4px;
+    color:rgb(18, 15, 17);
+    background-color: rgb(247, 227, 236);
+    width: 80px;
+    text-align: center;
+}
+
+.video_header #optionDropdown {
+    position: absolute;
+    top:5px;
+    right:1px;
+    padding: 4px;
+    color:rgb(18, 15, 17);
+    background-color: rgb(210, 231, 249);
+    width: 120px;
+    /* border: transparent; */
+}
+
 .video_header .recom_img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     margin: 20px;
 }
 
-.video_header select {
-    font-size: 50px;
-}
-
-.video_header h1 {
-    text-align: left;
-    padding: 50px;
-    font-size: 50px;
-    border-bottom: 1px dashed black;
-}
-
-.video_header h2 {
+.video_header .my_h2 {
     margin: 0;
-    text-align: left;
+    text-align: center;
     padding: 50px;
+    padding-bottom: 25px;
     font-size: 40px;
+}
+
+.video_header .my_h3 {
+    padding: 20px;
+    color: brown;
+    margin: 0;
+    text-align: center;
+    font-size: 30px;
 }
 
 .video_header .category {
@@ -117,7 +157,6 @@ video::-webkit-media-controls-play-button {
 }
 
 .video_header .mainpage_div {
-
     height: 100px;
     width: 130px;
     position: absolute;
@@ -128,18 +167,7 @@ video::-webkit-media-controls-play-button {
 .video_header .video_container {
     width: 800px;
     height: 520px;
-}
-
-.video_header #optionSpeed {
-    font-size: 25px;
-    background-color: transparent;
-    width: 70px;
-    text-align: center;
-}
-
-.video_header #optionDropdown {
-    font-size: 25px;
-    background-color: transparent;
-    width: 120px;
-    text-align: center;
+    padding : 10px;
+    padding-bottom: 0px;
+    background-color: rgb(245, 240, 193);
 }

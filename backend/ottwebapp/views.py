@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 class VideoListView(APIView):
     def get(self, request):
-        videos = VideoList.objects.all()
+        videos = VideoList.objects.all().order_by('id')
         serializer = VideoListSerializer(videos, many=True)
         return Response(serializer.data)
     
@@ -160,7 +160,7 @@ class StreamingQualityView(APIView):
 class GraphView(APIView):
     def get(self, request, pk):
         sq_id = request.GET.dict()['sq_id']
-        sq = StreamingQuality.objects.get(id=sq_id)
+        sq = StreamingQuality.objects.get(pk=sq_id)
         graph = Graph.objects.get(sq_id=sq)
         serializer = GraphSerializer(graph)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -170,7 +170,7 @@ class GraphView(APIView):
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print(json_data)
         sq_id = request.data.get('sq_id')
-        sq = StreamingQuality.objects.get(id=sq_id)
+        sq = StreamingQuality.objects.get(pk=sq_id)
         download_bitrate = request.data.get('download_bitrate')
         selected_bitrate = request.data.get('selected_bitrate')
         buffering_start = request.data.get('buffering_start')
