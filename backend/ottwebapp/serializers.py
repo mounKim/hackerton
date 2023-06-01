@@ -22,7 +22,7 @@ class CategorySerializer(serializers.ModelSerializer):
 #                   'video_category')
         
 class VideoListSerializer(serializers.ModelSerializer):
-    # video_category = CategorySerializer(many=True, required=False)
+    video_category = CategorySerializer(many=True, read_only=True)
     # id = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     # image = serializers.SerializerMethodField()
 
@@ -31,6 +31,7 @@ class VideoListSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'video_url',
                   'video_name',
+                  'video_category',
                   'image')
 
 class UserCategorySerializer(serializers.ModelSerializer):
@@ -38,3 +39,14 @@ class UserCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserCategory
         fields = ('score1', 'score2', 'score3', 'score4', 'score5', 'score6', 'score7', 'score8')
+
+class StreamingQualitySerializer(serializers.ModelSerializer):
+    video_id = VideoListSerializer(many=False, read_only=True)
+    class Meta:
+        model = StreamingQuality
+        fields = ('video_id','video_url', 'bitrate_resource', 'resolution', 'streaming_type', 'protocol')
+
+class GraphSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Graph
+        fields = ('download_bitrate', 'selected_bitrate', 'buffering_start', 'buffering_end', 'segment_duration')

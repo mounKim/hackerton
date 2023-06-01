@@ -1,3 +1,11 @@
+video::-webkit-media-controls-fullscreen-button {
+    display: none !important;
+}
+
+video::-webkit-media-controls-play-button {
+    display: none;
+}
+
 .video_header {
     background-color: #C7EBFF;
     min-height: 60vh;

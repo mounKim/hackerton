@@ -49,31 +49,29 @@ class WatchedVideo(models.Model):
         return f"user_id: {self.user_id} | video_id: {self.video_id} | update_at : {self.updated_at}"
 
 class StreamingQuality(models.Model):
-    video_id = models.ForeignKey(VideoList, on_delete=models.CASCADE)
-    
-    # 해당 세션의 content_info
-    content_info = models.CharField(max_length=255)
-
-    # 컨텐츠 주소
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    video_id = models.ForeignKey(WatchedVideo, on_delete=models.CASCADE)
+    # 컨텐츠 주소.
     video_url = models.CharField(max_length=511)
-
-    # 컨텐츠 정보 받은 시간
-    content_date= models.DateTimeField(auto_now_add=True)
-    
-    # bandwidth
-    bandwidth = ArrayField(models.CharField(max_length=10), blank=True)
-
     # 제공되는 bitrate 정보
     bitrate_resource = ArrayField(models.CharField(max_length=10), blank=True)
-
-    # 컨텐츠의 width와 height
+    # 컨텐츠의 width와 height (ex 720X1080)
     resolution = ArrayField(models.CharField(max_length=10), blank=True)
-
-    # 스트리밍 종류
-    streaming_type = models.CharField(max_length=50)
-
+    # 스트리밍 종류 (VOD or LIVE)
+    streaming_type = models.CharField(max_length=10)
     # 비디오 스트리밍 프로토콜
-    protocol = models.CharField(max_length=50)
+    protocol = models.CharField(max_length=5)
 
-    # def __str__(self):
-    #     return f"user_id: {self.user_id} | video_id: {self.video_id} | update_at : {self.updated_at}"
+    def __str__(self):
+        return f"user_id: {self.user_id} | video_id: {self.video_id} | update_at : {self.video_url}"
+
+class Graph(models.Model):
+    sq_id = models.ForeignKey(StreamingQuality, on_delete=models.CASCADE)
+    download_bitrate = models.IntegerField(default=0)
+    selected_bitrate = models.IntegerField(default=0)
+    buffering_start = models.IntegerField(default=0)
+    buffering_end = models.IntegerField(default=0)
+    segment_duration = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"sq_id: {self.sq_id}"
