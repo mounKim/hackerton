@@ -187,7 +187,7 @@ class MainPage extends React.Component {
                             <div className='mypage_div'>
                                 <Link to="/mypage">
                                     <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
-                                    </Link>
+                                </Link>
                             </div>
                             <div className="logo_div">
                                 <motion.img src={Logo} className="logo" alt="logo"
