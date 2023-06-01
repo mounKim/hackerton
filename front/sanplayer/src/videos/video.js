@@ -34,7 +34,7 @@ class Video_comp extends React.Component {
                 'video_id': videoid
             })
             .then(function(response) {
-                // console.log(response);
+                console.log(response);
             })
         } catch(e) {
             console.error(e);
@@ -64,15 +64,14 @@ class Video_comp extends React.Component {
         const video = document.getElementById('video');
         const hls = new Hls();
         const optionDropdown = document.getElementById('optionDropdown');
-        let bitrate_resource = "";
-        let resolution = "";
 
-        // let bitrate_resource = [];
-        // let resolution = [];
+
+        let bitrate_resource = [];
+        let resolution = [];
 
         hls.loadSource(link);
         hls.attachMedia(video); 
-        hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+        hls.on(Hls.Events.MANIFEST_PARSED, async function (event, data) {
             var isLIVE = hls.levels[0].details == null;
             if (isLIVE) {
                 console.log('Video is Live');
@@ -81,32 +80,29 @@ class Video_comp extends React.Component {
                 console.log('Video is VOD');
                 this.type = 'vod';
             }
-            // console.log('>>>>>>>>>>>> manifest loaded, found ' + data.levels.length + ' quality level');
-            // console.log(hls);
+            console.log('>>>>>>>>>>>> manifest loaded, found ' + data.levels.length + ' quality level');
+
             optionDropdown.innerHTML = '';
-            for (let i = 0; i <= data.levels.length; i++) {
+            for (let i = 0; i < data.levels.length; i++) {
                 const option = document.createElement('option');
                 option.value = i;
-                option.textContent = `해상도 ${data.levels[i]['heigth']}`;
+                console.log(data.levels[i])
+                option.textContent = `해상도 ${data.levels[i]['height']}`;
                 optionDropdown.appendChild(option);
                 
-                // bitrate_resource += ` ${data.levels[i]['bitrate']}`;
-                // resolution +=  ` ${data.levels[i]['width']}X${data.levels[i]['heigth']}`;
-                // console.log(` ${data.levels[i]['bitrate']}`, "___", ` ${data.levels[i]['width']}X${data.levels[i]['height']}`, "_________", bitrate_resource, resolution);
-                // bitrate_resource.push(`${data.levels[i]['bitrate']}`);
-                // resolution.push(`${data.levels[i]['width']}X${data.levels[i]['height']}`);
-            }      
+                bitrate_resource.push(`${data.levels[i]['bitrate']}`);
+                resolution.push(`${data.levels[i]['width']}X${data.levels[i]['height']}`);
+            }
+            await axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
+                'user_id': user,
+                'video_id': videoid,
+                'bitrate_resource' : bitrate_resource,
+                'resolution' : resolution,
+                'streaming_type' : this.type,
+                'protocol' : 'hls',
+            });
         });   
 
-        // axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
-        //     'user_id': user,
-        //     'video_id': videoid,
-        //     'bitrate_resource' : await bitrate_resource,
-        //     'resolution' : await resolution,
-        //     'streaming_type' : this.type,
-        //     'protocol' : 'hls',
-        // });
-        
         console.log(hls);
 
         this.hlsRef = hls;
