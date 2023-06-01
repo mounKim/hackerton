@@ -25,6 +25,7 @@ class Video_comp extends React.Component {
         var user = sessionStorage.getItem('user_id');
         var link = null;
         var video_name = null;
+        var video_url = null;
         const videoid = this.props.param.id;
         
         try {
@@ -43,9 +44,9 @@ class Video_comp extends React.Component {
             await axios.get(`http://127.0.0.1:8000/videos/`)
             .then(function(response) {
                 console.log('******************************');
-                console.log(response.data[videoid - 1]);
                 var cur_video = response.data[videoid - 1];
                 video_name = cur_video.video_name;
+                video_url = cur_video.video_category[0]['category'];
                 link = cur_video.video_url;
             })
         } catch(e) {
@@ -56,7 +57,8 @@ class Video_comp extends React.Component {
             user: user,
             link: link,
             videoid: videoid,
-            name: video_name
+            name: video_name,
+            category: video_url
         });
 
         const video = document.getElementById('video');
@@ -198,6 +200,22 @@ class Video_comp extends React.Component {
         video.pause();
     }
 
+    handleSpeed = () => {
+        var value = document.getElementById('optionSpeed');
+        var select = value.options[value.selectedIndex].value;
+        if(select == 'slow') {
+            document.getElementById('video').playbackRate = 0.5;
+        } else if(select == 'slow_normal') {
+            document.getElementById('video').playbackRate = 0.75;
+        } else if(select == 'normal') {
+            document.getElementById('video').playbackRate = 1.0;
+        } else if(select == 'normal_high') {
+            document.getElementById('video').playbackRate = 1.25;
+        } else {
+            document.getElementById('video').playbackRate = 1.5;
+        }
+    }   
+
     handleLevelClick = () => {
         const optionDropdown = document.getElementById('optionDropdown');
         var level = optionDropdown.options[optionDropdown.selectedIndex].value;
@@ -228,14 +246,23 @@ class Video_comp extends React.Component {
                         <Link to="/mainpage">
                             <button id="home">MAINPAGE</button>
                         </Link>
-                        <div id="info">{this.state.name}</div>
+                        <div id="info">{this.state.name}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {this.state.category}</div>
                         <video controls payload="" id="video"></video>
                         <div className='container'>
                             <button className='btn' onClick={this.start}>재생</button>
                             <button className='btn' onClick={this.stop}>일시정지</button>
                             <button className='btn' onClick={this.handleSave}>찜하기</button>
+                            <select id="optionSpeed" onChange={this.handleSpeed}>
+                                <option value="slow">0.5</option>
+                                <option value="slow_normal">0.75</option>
+                                <option value="normal" selected>1.0</option>
+                                <option value="norm al_high">1.25</option>
+                                <option value="high">1.5</option>
+                            </select>
                             <select id="optionDropdown" onChange={this.handleLevelClick}>
-                                <option value="">해상도</option>
+                                <option value="normal">720p</option>
                             </select>
                         </div>
                     </div>

@@ -1,3 +1,11 @@
+video::-webkit-media-controls-fullscreen-button {
+    display: none !important;
+}
+
+video::-webkit-media-controls-play-button {
+    display: none;
+}
+
 .video_header {
     margin-top: 50px;
     width: 100%;
@@ -15,6 +23,7 @@
 }
 
 .video_header #video {
+    margin-top: 30px;
     margin-left: 100px;
     width: 70%;
     height: 70%;
@@ -39,7 +48,7 @@
     font-size: 50px;
     font-weight: 700;
     top: 250px;
-    left: 500px;
+    left: 350px;
 }
 
 .video_header .container {
@@ -58,6 +67,7 @@
 .video_header button {
     padding: 10px;
     margin: 50px;
+    margin-top: 20px;
     font-size: 50px;
 }
 
