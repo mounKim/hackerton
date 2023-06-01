@@ -132,7 +132,10 @@ class StreamingQualityView(APIView):
 
     def post(self, request):
         json_data = json.loads(request.body)
-
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~2")
+        print(json_data)
+        
+        
         user_id = request.data.get('user_id')
         video_id = request.data.get('video_id')
         user = User.objects.get(username=user_id)
@@ -141,32 +144,34 @@ class StreamingQualityView(APIView):
         v = videos[videos.count() -1]
         video_url = video.video_url
         # bitrate_resource = ['123', '456', '789']
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~2")
-        print(request.POST.dict())
-        print(json.data)
-        
-        # bitrate_resource = request.POST.getlist('bitrate_resource') 
+
         bitrate_resource = request.data.get('bitrate_resource') 
+        # resolution = request.POST.getlist('resolution') <- list에서 안됨
+        resolution = request.data.get('resolution') 
         
-        print("sdfsdfsdf : ", bitrate_resource)
-        resolution = request.POST.getlist('resolution')
+        print("bitrate : ", bitrate_resource)
+        print("resolution : ", resolution)
+        
         streaming_type = request.data.get('streaming_type')
         protocol = request.data.get('protocol')
-        print("bitrate_resource", bitrate_resource,  "   resolution : ", resolution)
 
-        streaming_quality = StreamingQuality(
-                                            user_id = user,
-                                            video_id = v,
-                                            video_url = video_url,
-                                            bitrate_resource = bitrate_resource,
-                                            resolution = resolution,
-                                            streaming_type = streaming_type,
-                                            protocol = protocol 
-                                        )
+        # streaming_quality = StreamingQuality(
+        #                                     user_id = user,
+        #                                     video_id = v,
+        #                                     video_url = video_url,
+        #                                     bitrate_resource = bitrate_resource,
+        #                                     resolution = resolution,
+        #                                     streaming_type = streaming_type,
+        #                                     protocol = protocol 
+        #                                 )
 
-        streaming_quality.save()
-        return Response({'message': 'Streaming Quality saved successfully', 'id' : streaming_quality.id }, status=status.HTTP_201_CREATED)
+        # streaming_quality.save()
+        
+        # return Response({'message': 'Streaming Quality saved successfully', 'id' : streaming_quality.id }, status=status.HTTP_201_CREATED)
 
+        return Response({'message': 'Streaming Quality information saved successfully'}, status=status.HTTP_201_CREATED)
+    
+    
 class GraphView(APIView):
     def get(self, request):
         sq_id = request.GET.dict()['sq_id']

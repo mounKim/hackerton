@@ -22,7 +22,7 @@ class CategorySerializer(serializers.ModelSerializer):
 #                   'video_category')
         
 class VideoListSerializer(serializers.ModelSerializer):
-    # video_category = CategorySerializer(many=True, required=False)
+    video_category = CategorySerializer(many=True, read_only=True)
     # id = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     # image = serializers.SerializerMethodField()
 
@@ -31,6 +31,7 @@ class VideoListSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'video_url',
                   'video_name',
+                  'video_category',
                   'image')
 
 class UserCategorySerializer(serializers.ModelSerializer):
