@@ -101,8 +101,8 @@ class Videos extends React.Component {
             } catch (e) {
                 console.log(e);
             }
-            console.log(categorylist);
-            console.log(user)
+            // console.log(categorylist);
+            // console.log(user)
             this.setState({
                 user: user,
                 categorylist: categorylist

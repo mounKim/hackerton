@@ -10,13 +10,18 @@ import User from '../user.png';
 import Main from '../logo.png';
 import {BsPauseCircle, BsPlayCircle, BsHeart} from 'react-icons/bs'
 
+
 var downloadBitrateData = [];
 var selectedBitrateData = [];
 var bufferingStartData = [];
 var bufferingEndData = [];
 var bufferHealthData = [];
 var segmentDurationData = [];
-var sq_id;
+var sq_id = null;
+
+const sleep = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
 
 class Video_comp extends React.Component {
     state = {
@@ -26,6 +31,7 @@ class Video_comp extends React.Component {
         name: null,
         category: null,
         current_playing: false,
+        recom_list: (<div> </div>)
     };
     constructor(props) {
         super(props);
@@ -46,7 +52,7 @@ class Video_comp extends React.Component {
                 'video_id': videoid
             })
             .then(function(response) {
-                console.log(response);
+                // console.log(response);
             })
         } catch(e) {
             console.error(e);
@@ -55,7 +61,7 @@ class Video_comp extends React.Component {
         try {
             await axios.get(`http://127.0.0.1:8000/videos/`)
             .then(function(response) {
-                console.log('******************************');
+                // console.log('******************************');
                 var cur_video = response.data[videoid - 1];
                 video_name = cur_video.video_name;
                 video_url = cur_video.video_category[0]['category'];
@@ -66,86 +72,80 @@ class Video_comp extends React.Component {
         }
 
         var recom_data = null;
-        await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
-        .then(function(response) {
-            recom_data = response.data.slice(0, 3);
-        });   
-        recom_data.map((d) => {
-            d.link = "./" + d.id;
-            d.img_link = "http://127.0.0.1:8000/" + d.image;
-        })
-        var recom_list = recom_data.map((d) => 
-            <div className='image'><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br />{d.video_name}</div>); 
-        this.setState({
-            user: user,
-            link: link,
-            videoid: videoid,
-            name: video_name,
-            category: video_url,
-            current_playing: false,
-            recom_list: recom_list
-        });
+        try {
+            await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
+            .then(function(response) {
+                recom_data = response.data.slice(0, 3);
+            });   
+            recom_data.map((d) => {
+                d.link = "./" + d.id;
+                d.img_link = "http://127.0.0.1:8000/" + d.image;
+            })
+            var recom_list = recom_data.map((d) => 
+                <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br />{d.video_name}</div>); 
+            this.setState({
+                user: user,
+                link: link,
+                videoid: videoid,
+                name: video_name,
+                category: video_url,
+                current_playing: false,
+                recom_list: recom_list
+            });
+        } catch(e) {
+            console.error(e);
+        }
 
         const video = document.getElementById('video');
         const hls = new Hls();
         const optionDropdown = document.getElementById('optionDropdown');
 
-        let bitrate_resource = [];
-        let resolution = [];
-
-        
-
-        hls.loadSource(link);
-        hls.attachMedia(video); 
         hls.on(Hls.Events.MANIFEST_PARSED, async function (event, data) {
+            let bitrate_resource = [];
+            let resolution = [];
             var isLIVE = hls.levels[0].details == null;
             if (isLIVE) {
-                console.log('Video is Live');
+                // console.log('Video is Live');
                 this.type = 'live';
             } else{
-                console.log('Video is VOD');
+                // console.log('Video is VOD');
                 this.type = 'vod';
             }
-            console.log('>>>>>>>>>>>> manifest loaded, found ' + data.levels.length + ' quality level');
+            // console.log('>>>>>>>>>>>> manifest loaded, found ' + data.levels.length + ' quality level');
 
             optionDropdown.innerHTML = '';
             for (let i = 0; i < data.levels.length; i++) {
                 const option = document.createElement('option');
                 option.value = i;
-                console.log(data.levels[i])
-                option.textContent = `${data.levels[i]['height']}p`;
+                // console.log(data.levels[i])
+                option.textContent = `${data.levels[i]['name']}p`;
                 optionDropdown.appendChild(option);
                 
                 bitrate_resource.push(`${data.levels[i]['bitrate']}`);
                 resolution.push(`${data.levels[i]['width']}X${data.levels[i]['height']}`);
+                await sleep(200);
+                hls.loadLevel = i;
             }
-
-            hls.currentLevel = 0;
             
-            await axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
-                'user_id': user,
-                'video_id': videoid,
-                'bitrate_resource' : bitrate_resource,
-                'resolution' : resolution,
-                'streaming_type' : this.type,
-                'protocol' : 'hls',
-            });
             try {
-                await axios.get(`http://127.0.0.1:8000/streaming_quality/?user_id=`+user)
-                .then(function(response) {
-                    var cur_sq = response.data[response.data.length -1];
-                    sq_id = cur_sq['id'];
-                })
+                await axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
+                    'user_id': user,
+                    'video_id': videoid,
+                    'bitrate_resource' : bitrate_resource,
+                    'resolution' : resolution,
+                    'streaming_type' : this.type,
+                    'protocol' : 'hls',
+                }).then(
+                    await axios.get(`http://127.0.0.1:8000/streaming_quality/?user_id=`+user)
+                    .then(function(response) {
+                        var cur_sq = response.data[response.data.length -1];
+                        sq_id = cur_sq['id'];
+                    })
+                )
             } catch(e) {
                 console.error(e);
             }
-        });   
-
-        console.log(hls);
-
-        this.hlsRef = hls;
-
-        
+        });  
 
         hls.on(Hls.Events.FRAG_LOADED, async function(event, data) {
             // console.log('=========================================================');
@@ -176,8 +176,16 @@ class Video_comp extends React.Component {
             bufferingEndData.push(frag.stats.buffering.end);//
             bufferHealthData.push(frag.stats.loading.end - frag.stats.loading.start);
             segmentDurationData.push(frag.duration);//
-
         });
+        
+        hls.loadSource(link);
+        hls.attachMedia(video);  
+
+        hls.currentLevel = 0;
+
+        // console.log(hls);
+
+        this.hlsRef = hls;
 
         // window.addEventListener('beforeunload', this.handleBeforeUnload);
     }
@@ -188,17 +196,17 @@ class Video_comp extends React.Component {
     // }
 
     handleBeforeUnload = async () => {
-        console.log('Unload!!!!!!!');
-
         try {
-            await axios.post('http://127.0.0.1:8000/streaming_quality/'+sq_id+'/', {
-                'sq_id':sq_id,
-                'download_bitrate' : downloadBitrateData,
-                'selected_bitrate' : selectedBitrateData,
-                'buffering_start' : bufferingStartData,
-                'buffering_end' : bufferingEndData,
-                'segment_duration' : segmentDurationData,
-            });
+            if(sq_id != null){
+                await axios.post('http://127.0.0.1:8000/streaming_quality/'+sq_id+'/', {
+                    'sq_id':sq_id,
+                    'download_bitrate' : downloadBitrateData,
+                    'selected_bitrate' : selectedBitrateData,
+                    'buffering_start' : bufferingStartData,
+                    'buffering_end' : bufferingEndData,
+                    'segment_duration' : segmentDurationData,
+                });
+            }
         } catch (e) {
             console.error(e);
         }
@@ -212,7 +220,7 @@ class Video_comp extends React.Component {
                 'video_id': videoid
             })
             .then(function(response) {
-                console.log(response);
+                // console.log(response);
             })
         } catch(e) {
             console.error(e);
@@ -242,6 +250,7 @@ class Video_comp extends React.Component {
                 name: this.state.name,
                 category: this.state.category,
                 current_playing: false,
+                recom_list: this.state.recom_list,
             });
         } else {
             this.start();
@@ -252,6 +261,7 @@ class Video_comp extends React.Component {
                 name: this.state.name,
                 category: this.state.category,
                 current_playing: true,
+                recom_list: this.state.recom_list,
             })
         }
     }
@@ -275,23 +285,22 @@ class Video_comp extends React.Component {
     handleLevelClick = () => {
         const optionDropdown = document.getElementById('optionDropdown');
         var level = optionDropdown.options[optionDropdown.selectedIndex].value;
-        console.log('Button clicked!', level);
+        // console.log('Button clicked!', level);
         this.hlsRef.currentLevel = level;
     };
 
     handleZeroClick = () => {
-        console.log('Button clicked!');
+        // console.log('Button clicked!');
         this.hlsRef.currentLevel = 0;
     };
 
     handleAutoClick = () => {
-        console.log('Button clicked!');
+        // console.log('Button clicked!');
         this.hlsRef.currentLevel = -1; // Auto resolution switching
     };
 
     async componentWillUnmount(){
         await this.handleBeforeUnload();
-        alert('closing tab');
     }
 
     render() {
@@ -324,8 +333,8 @@ class Video_comp extends React.Component {
                                     <option value="norm al_high">1.25</option>
                                     <option value="high">1.5</option>
                                 </select>
-                                <select id="optionDropdown" onChange={this.handleLevelClick} defaultValue="normal">
-                                    <option value="" selected disabled hidden>해상도</option>
+                                <select id="optionDropdown" onChange={this.handleLevelClick} defaultValue="init">
+                                    <option value="init" >해상도</option>
                                 </select>
                             </div>
                         </div>

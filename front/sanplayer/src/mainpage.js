@@ -137,37 +137,44 @@ class MainPage extends React.Component {
 
     async componentDidMount() {
         var categorylist = category_name.map((x) => ({name: x, recommand: null, video: null}));
+        var user = sessionStorage.getItem('user_id')
         try {
             // POST 요청은 body에 실어 보냄
-            var videos = null;
-            var user = sessionStorage.getItem('user_id')
-            await axios.get('http://127.0.0.1:8000/user_category/?user_id='+user)
-            .then(function(response) {
-                videos = response.data;
-            });
-            var max = 0;
-            var min = 999999;
-            for(let i = 0; i < 8; i++){
-                categorylist[i].recommand = videos['score'+ (i + 1)];
-                max = max > categorylist[i].recommand?max:categorylist[i].recommand;
-                min = min > categorylist[i].recommand?categorylist[i].recommand:min;
-                await axios.get('http://127.0.0.1:8000/video_category/?category='+category_name[i])
-                .then(function(response_cat) {
-                    categorylist[i].video = response_cat.data;
+            if(user != null){
+                var videos = null;
+                await axios.get('http://127.0.0.1:8000/user_category/?user_id='+user)
+                .then(function(response) {
+                    videos = response.data;
                 });
-            }
-            if(max == min){
+                var max = 0;
+                var min = 999999;
+                for(let i = 0; i < 8; i++){
+                    categorylist[i].recommand = videos['score'+ (i + 1)];
+                    max = max > categorylist[i].recommand?max:categorylist[i].recommand;
+                    min = min > categorylist[i].recommand?categorylist[i].recommand:min;
+                    await axios.get('http://127.0.0.1:8000/video_category/?category='+category_name[i])
+                    .then(function(response_cat) {
+                        categorylist[i].video = response_cat.data;
+                    });
+                }
+                if(max == min){
+                    for(let i = 0; i < 8; i++)
+                        categorylist[i].recommand = 5;
+                }
+                else{
+                    for(let i = 0; i < 8; i++)
+                        categorylist[i].recommand = Math.round(4 + 0.5 * (1 + 9 * (categorylist[i].recommand - min)/(max - min)));
+                }
+            } else {
                 for(let i = 0; i < 8; i++)
                     categorylist[i].recommand = 5;
             }
-            else{
-                for(let i = 0; i < 8; i++)
-                    categorylist[i].recommand = Math.round(4 + 0.5 * (1 + 9 * (categorylist[i].recommand - min)/(max - min)));
-            }
         } catch (e) {
+            for(let i = 0; i < 8; i++)
+                    categorylist[i].recommand = 5;
             console.log(e);
         }
-        console.log(categorylist);
+        // console.log(categorylist);
         this.setState({
             cur_mountain: null,
             user: user,
