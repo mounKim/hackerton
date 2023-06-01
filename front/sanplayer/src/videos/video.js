@@ -5,61 +5,9 @@ import { useParams } from 'react-router-dom';
 import {
     Link
 } from "react-router-dom";
-import { color } from 'framer-motion';
 import Hls from 'hls.js';
+import User from '../user.png';
 
-// const Video = () => {
-//     const { videoID } = useParams();
-//     console.log(video_list);
-//     const {title, thumbnail, link, category} = video_list[videoID];
-//     var user = sessionStorage.getItem('user_id');
-//     useEffect(() => {
-//         try {
-//             axios.post(`http://127.0.0.1:8000/watched_video/`, {
-//                 'user_id': user,
-//                 'video_id': videoID
-//             })
-//             .then(function(response) {
-//                 console.log(response);
-//             })
-//         } catch(e) {
-//             console.error(e);
-//         }
-
-//         var video_list = "";
-//         axios.get('http://127.0.0.1:8000/videos/')
-//         .then(function(response) {
-//             video_list = response.data;
-//             console.log(video_list);
-//         })
-//     }, []);
-
-//     async function handleSave(event) {
-//         event.preventDefault();
-//         try {
-//             await axios.post('http://127.0.0.1:8000/my_page/', {
-//                 'user_id': user,
-//                 'video_id': videoID
-//             })
-//             .then(function(response) {
-//                 console.log(response);
-//             })
-//         } catch(e) {
-//             console.error(e);
-//         }
-//     }
-
-//     return (
-//         <div className="video_header">
-//             <video id="video" controls="controls">
-//                 <source src={link} type="video/mp4"/>
-//             </video>
-//             <button>배속</button>
-//             <button>해상도</button>
-//             <button onClick={handleSave}>찜하기</button>
-//         </div>
-//     );
-// };
 
 class Video_comp extends React.Component {
     state = {
@@ -129,10 +77,6 @@ class Video_comp extends React.Component {
             }
             console.log('>>>>>>>>>>>> manifest loaded, found ' + data.levels.length + ' quality level');
             // console.log(hls);
-            video.muted = true;
-            var playPromise = video.play();
-            if (playPromise !== undefined) { playPromise.then((_) => {}).catch((error) => {}); }
-            video.muted = false;
             optionDropdown.innerHTML = '';
             for (let i = 0; i <= data.levels.length; i++) {
                 const option = document.createElement('option');
@@ -237,6 +181,19 @@ class Video_comp extends React.Component {
         event.preventDefault();
     }
 
+    start = () => {
+        const video = document.getElementById('video');
+        video.muted = true;
+        video.play();
+        video.muted = false;
+    }
+
+    stop = () => {
+        const video = document.getElementById('video');
+        video.muted = true;
+        video.pause();
+    }
+
     handleLevelClick = () => {
         const optionDropdown = document.getElementById('optionDropdown');
         var level = optionDropdown.options[optionDropdown.selectedIndex].value;
@@ -258,17 +215,29 @@ class Video_comp extends React.Component {
         return(
             <ConditionalLink to="../login/" condition={this.state.user === null} style={{ textDecoration: "none" }}>
                 <div className="video_header">
-                    <select id="optionDropdown" onChange={this.handleLevelClick}>
-                        <option value="">해상도</option>
-                    </select>
-
-                    <div>
-                        <button className='btn' onClick={this.handleZeroClick}>Level 0</button>
-                        <button className='btn' onClick={this.handleAutoClick}>Auto</button>
+                    <div className="wrapper">
+                        <div id="mypage">
+                            <Link to="/mypage">
+                                <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
+                            </Link>
+                        </div>                        
+                        <Link to="/mainpage">
+                            <button id="home">MAINPAGE</button>
+                        </Link>
+                        <video controls payload="" id="video"></video>
+                        <div className='container'>
+                            <button className='btn' onClick={this.start}>재생</button>
+                            <button className='btn' onClick={this.stop}>일시정지</button>
+                            <button className='btn' onClick={this.handleSave}>찜하기</button>
+                            <select id="optionDropdown" onChange={this.handleLevelClick}>
+                                <option value="">해상도</option>
+                            </select>
+                        </div>
                     </div>
-                    <video controls payload="" id="video"></video>
+                    <div className='recommend'>
+                        <h2 id="recom_h2">추천 동영상</h2>
 
-                    <button onClick={this.handleSave}>찜하기</button>
+                    </div>
                 </div>
             </ConditionalLink>
         )
