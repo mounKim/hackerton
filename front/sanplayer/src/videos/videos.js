@@ -114,7 +114,7 @@ class Videos extends React.Component {
 
     render() {
         return (
-            <div className="video_header">
+            <div className="videos_header">
                 <h1>하늘에서 보기</h1>
                 <div className='category'>
                     <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:0}/>

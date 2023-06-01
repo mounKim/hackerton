@@ -6,7 +6,7 @@ video::-webkit-media-controls-play-button {
     display: none;
 }
 
-.video_header {
+.videos_header {
     background-color: #C7EBFF;
     min-height: 60vh;
     display: flex;
@@ -27,24 +27,24 @@ video::-webkit-media-controls-play-button {
     background-color: #C7EBFF;
 }
 
-.video_header .videoscroll {
+.videos_header .videoscroll {
     overflow:auto;
     background-color: #C7EBFF;
 }
 
-.video_header .selectedmountain {
+.videos_header .selectedmountain {
     line-height: 2;
     position: relative;
     left: -20%;
     top: 10%;
 }
 
-.video_header .videodiv {
+.videos_header .videodiv {
     display: inline-block;
     margin: 10px;
 }
 
-.video_header .category {
+.videos_header .category {
     position: relative;
     white-space: nowrap;
     top: -36px;
@@ -52,7 +52,7 @@ video::-webkit-media-controls-play-button {
     height:384px;
 }
 
-.video_header .thumbnail {
+.videos_header .thumbnail {
     width: 280px;
     height: 167px;
     border-radius: 5%;

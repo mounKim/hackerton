@@ -1,4 +1,4 @@
-import './videos.css';
+import './video.css';
 import React, {useEffect} from 'react';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
