@@ -112,52 +112,63 @@ class Videos extends React.Component {
 
     render() {
         return (
-            <div className="videos_header">
-                <ConditionalLink to="../login/" condition={this.state.user === null} style={{ textDecoration: "none" }}>
-                    <div className='mainpage_div'>
-                        <Link to="/mainpage">
-                            <img src={Main} className="mainpagelogo" alt="mainpagelogo" style={{width:"100%", height:"100%"}}/>
-                        </Link>
+            <ConditionalLink to="../login/" condition={this.state.user === null} style={{ textDecoration: "none" }}>
+                <Loading condition={this.state.categorylist === null}>
+                    <div className="videos_header">
+                        <div className='mainpage_div'>
+                            <Link to="/mainpage">
+                                <img src={Main} className="mainpagelogo" alt="mainpagelogo" style={{width:"100%", height:"100%"}}/>
+                            </Link>
+                        </div>
+                        <div className='mypage_div'>
+                            <Link to="/mypage">
+                                <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
+                            </Link>
+                        </div>
+                        <h2 className='title' style={{fontSize:'35px'}}>{this.state.user === null?'로그인해주세요!':'하늘에서 보기'}</h2>
+                        <div className='pad' />
+                        <div className='category'>
+                            <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:0}/>
+                        </div>
+                        <div className='category'>
+                            <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:1}/>
+                        </div>
+                        <div className='category'>
+                            <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:2}/>
+                        </div>
+                        <div className='category'>
+                            <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:3}/>
+                        </div>
+                        <div className='category'>
+                            <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:4}/>
+                        </div>
+                        <div className='category'>
+                            <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:5}/>
+                        </div>
+                        <div className='category'>
+                            <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:6}/>
+                        </div>
+                        <div className='category'>
+                            <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:7}/>
+                        </div>
                     </div>
-                    <div className='mypage_div'>
-                        <Link to="/mypage">
-                            <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
-                        </Link>
-                    </div>
-                    <h2 className='title' style={{fontSize:'35px'}}>{this.state.user === null?'로그인해주세요!':'하늘에서 보기'}</h2>
-                    <div className='pad' />
-                    <div className='category'>
-                        <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:0}/>
-                    </div>
-                    <div className='category'>
-                        <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:1}/>
-                    </div>
-                    <div className='category'>
-                        <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:2}/>
-                    </div>
-                    <div className='category'>
-                        <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:3}/>
-                    </div>
-                    <div className='category'>
-                        <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:4}/>
-                    </div>
-                    <div className='category'>
-                        <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:5}/>
-                    </div>
-                    <div className='category'>
-                        <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:6}/>
-                    </div>
-                    <div className='category'>
-                        <Videos_list user={this.state.user} categoryinfo={this.state.categorylist} index={this.state.categorylist===null?null:7}/>
-                    </div>
-                </ConditionalLink>
-            </div>
+                </ Loading>
+            </ConditionalLink>
         );
     }
 }
 
 function ConditionalLink({ children, condition, ...props }) {
     return !!condition && props.to ? <Link {...props}>{children}</Link> : <>{children}</>
+}
+
+function Loading({ children, condition, ...props }) {
+    return !condition ? <>{children}</> : 
+    <div className="logo_div">
+        <motion.img src={Main} className="videos_loading_logo" alt="logo"
+            animate={{rotateZ: [0, 120, 240, 360, 480, 600, 720, 840, 960, 1080]}} transition={{repeat: Infinity, duration: 1}}
+        />
+    </div>
 }
 
 export default Videos;

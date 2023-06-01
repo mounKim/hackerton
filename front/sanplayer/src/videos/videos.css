@@ -93,3 +93,9 @@ video::-webkit-media-controls-play-button {
     height: 1px;
     float: left;
 }
+
+.videos_loading_logo {
+    height: 150px;
+    width: 200px;
+    pointer-events: none;
+}
