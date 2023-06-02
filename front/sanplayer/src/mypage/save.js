@@ -25,7 +25,7 @@ class SaveBlock extends React.Component {
             d.img_link = "http://127.0.0.1:8000/" + d.image;
         })
         var save_list = save_data.map((d) => 
-            <div className='image'><a href={d.link}><img src={d.img_link} alt={d.id}/></a>{d.video_name}</div>); 
+            <div className='image' key={d.video_name}><a href={d.link}><img src={d.img_link} alt={d.id}/></a>{d.video_name}</div>); 
 
         this.setState({
             save_list: save_list

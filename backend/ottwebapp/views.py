@@ -126,7 +126,7 @@ class StreamingQualityView(APIView):
     def get(self, request):
         user_id = request.GET.dict()['user_id']
         user = User.objects.get(username=user_id)
-        streaming_qualities = StreamingQuality.objects.filter(user_id_id=user.id)
+        streaming_qualities = StreamingQuality.objects.filter(user_id_id=user.id).order_by('-id')
         serializer = StreamingQualitySerializer(streaming_qualities, many=True)        
         return Response(serializer.data, status=status.HTTP_200_OK)
 

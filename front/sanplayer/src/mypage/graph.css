@@ -1,5 +1,7 @@
 .graph_page{
     background-color: rgb(255, 223, 241);
+    height: 60em;
+    position: relative;
 }
 
 .graph_page .head {
@@ -51,7 +53,10 @@
 }
 
 #chart_button{
-    /* padding:100px; */
+    position: absolute;
+    left: 45%;
+    top: 90%;
+    padding:30px;
     padding-bottom: 100px;
     background-color: rgb(255, 223, 241);
 }
@@ -70,4 +75,12 @@
     text-align: center;
     transition: top .01s linear;
     background-color: #bc98cc;
+}
+
+.graph_page .graph_div {
+    position: absolute;
+    left: 8%;
+    top: 20%;
+    width: 90em;
+    height: 40em;
 }

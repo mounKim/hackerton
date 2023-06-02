@@ -27,9 +27,9 @@ class ViewBlock extends React.Component {
             d.link = "./videos/" + d.id;
             d.img_link = "http://127.0.0.1:8000/" + d.image;
         })
-        console.log(watch_data);
+        // console.log(watch_data);
         var watch_list = watch_data.map((d) => 
-            <div className='image'><a href={d.link}><img src={d.img_link} alt={d.id}/></a>{d.video_name}</div>); 
+            <div className='image' key={d.video_name}><a href={d.link}><img src={d.img_link} alt={d.id}/></a>{d.video_name}</div>); 
         this.setState({
             watch_list: watch_list
         });
