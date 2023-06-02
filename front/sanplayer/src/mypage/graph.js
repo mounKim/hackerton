@@ -16,7 +16,7 @@ class Graph_comp extends React.Component {
         var user = sessionStorage.getItem('user_id');
         const sq_id = this.props.param.id;
         try {
-            await axios.get(`http://127.0.0.1:8000/streaming_quality/`+sq_id+`?sq_id=`+sq_id)
+            await axios.get(`http://127.0.0.1:8000/graph/?sq_id=`+sq_id)
             .then(function(response) {
                 console.log(response);
             })

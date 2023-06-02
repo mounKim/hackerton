@@ -13,21 +13,21 @@ const Mypage = ({items}) => {
     return (
         <div className="mypage_header">
             <div className='head'>
-                <h1>마이페이지</h1>
+                <h1>MYPAGE</h1>
                 <div className='mountains'>
                     <img id="mountain1" src={Logo} />
                     <img id="mountain2" src={Logo} />
                     <img id="mountain3" src={Logo} />
                 </div>
                 <Link to="/mainpage">
-                    <button id="home">MAINPAGE</button>
+                    <button id="home">MAIN PAGE</button>
                 </Link>
 
             </div>
 
             <View items={items[0]}/>
-            <Data />
             <Save items={items[1]}/>
+            <Data />
         </div>
     );
 };

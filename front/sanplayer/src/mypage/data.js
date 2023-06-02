@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Data() {
     return (
-        <div className="wrapper">
+        <div className="wrapper data">
             <h2>동영상 품질 데이터</h2>
             <Link to="/chart">
                 <button id="chart">자세히 보기</button>

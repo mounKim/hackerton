@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Link } from "react-router-dom"; 
 import { useParams } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 class Chart_comp extends React.Component {
     state = {
         user: null,
-        chart_list: null,
+        sq_data: null,
     };
     constructor(props) {
         super(props);
@@ -22,23 +22,49 @@ class Chart_comp extends React.Component {
         sq_data.map((d) => {
             d.link = "./chart/" + d.id;
         })
-        var chart_list = sq_data.map((d) =>
-            <div className='chart'>
-                <a href={d.link}>{d.id}</a>{d.video_url}
-            </div>); 
         this.setState({
             user:user,
-            chart_list: chart_list
+            sq_data: sq_data,
         });
     }
 
     render() {
+        const chartListToShow = this.state.sq_data ? this.state.sq_data.slice(0, 10) : null;
         return (
             <div className='wrapper'>
                 <h2>동영상 품질 데이터</h2>
-                <div className ='chartlist'>
-                    {this.state.chart_list}
-                </div>
+                {chartListToShow ? (
+                    <div className='chart'>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Session Id</th>
+                                    <th>URL</th>
+                                    <th>Playback Date</th>
+                                    <th>Bitrate Resource</th>
+                                    <th>Resolution(Width X Height)</th>
+                                    <th>Stream Type</th>
+                                    <th>Protocol</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {chartListToShow.map((d, index) => (
+                                    <tr key={index} onClick={() => window.location.href = d.link}>
+                                        <td>{d.id}</td>
+                                        <td>{d.video_url}</td>
+                                        <td>{d.video_id.updated_at}</td>
+                                        <td>{d.bitrate_resource}</td>
+                                        <td>{d.resolution}</td>
+                                        <td>{d.streaming_type}</td>
+                                        <td>{d.protocol}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <div>Loading chart data...</div>
+                )}
             </div>
         )
     }
