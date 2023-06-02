@@ -47,18 +47,6 @@ class Video_comp extends React.Component {
         const videoid = this.props.param.id;
         
         try {
-             await axios.post(`http://127.0.0.1:8000/watched_video/`, {
-                'user_id': user,
-                'video_id': videoid
-            })
-            .then(function(response) {
-                // console.log(response);
-            })
-        } catch(e) {
-            console.error(e);
-        }
-
-        try {
             await axios.get(`http://127.0.0.1:8000/videos/`)
             .then(function(response) {
                 // console.log(response);
@@ -73,35 +61,56 @@ class Video_comp extends React.Component {
 
         var recom_data = null;
         try {
-        await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
-        .then(function(response) {
-            recom_data = response.data;
-        });   
-        var recom_data2 = [];
-        for(var i = 0; i < recom_data.length; i++) {
-            if(videoid != recom_data[i]['id']) {
-                recom_data2.push(recom_data[i]);
+            await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
+            .then(function(response) {
+                recom_data = response.data;
+            });   
+            var recom_data2 = [];
+            for(var i = 0; i < recom_data.length; i++) {
+                if(videoid != recom_data[i]['id']) {
+                    recom_data2.push(recom_data[i]);
+                }
             }
+            // console.log(recom_data2);
+            recom_data2.map((d) => {
+                d.link = "./" + d.id;
+                d.img_link = "http://127.0.0.1:8000/" + d.image;
+            })
+            var recom_list = recom_data2.map((d) => 
+                <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br />{d.video_name}</div>); 
+            this.setState({
+                user: user,
+                link: link,
+                videoid: videoid,
+                name: video_name,
+                category: video_url,
+                current_playing: false,
+                recom_list: recom_list,
+                like: false
+            });
+        } catch(e) {
+            console.error(e);
         }
-        // console.log(recom_data2);
-        recom_data2.map((d) => {
-            d.link = "./" + d.id;
-            d.img_link = "http://127.0.0.1:8000/" + d.image;
-        })
-        var recom_list = recom_data2.map((d) => 
-            <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br />{d.video_name}</div>); 
-        this.setState({
-            user: user,
-            link: link,
-            videoid: videoid,
-            name: video_name,
-            category: video_url,
-            current_playing: false,
-            recom_list: recom_list
-        });
-    } catch(e) {
-        console.error(e);
-    }
+
+        var in_it = false;
+        try {
+            await axios.get("http://127.0.0.1:8000/saved_video/?user_id="+user)
+            .then(function(response) {
+                for(var i = 0; i < response.data.length; i++) {
+                    if(response.data[i]['id'] == videoid) {
+                        in_it = true;
+                    }
+                }
+                console.log(response.data);
+            })
+            if(in_it) {
+                this.setState({
+                    like: true
+                })
+            }
+        } catch(e) {
+            console.error(e);
+        }
 
         const video = document.getElementById('video');
         const hls = new Hls();
@@ -232,7 +241,7 @@ class Video_comp extends React.Component {
                 'like': this.state.like
             })
             .then(function(response) {
-                // console.log(response);
+                console.log(response);
             })
         } catch(e) {
             console.error(e);
@@ -318,6 +327,7 @@ class Video_comp extends React.Component {
     }
 
     render() {
+        console.log(this.state.like);
         return(
             <ConditionalLink to="../login/" condition={this.state.user === null} style={{ textDecoration: "none" }}>
                 <div className="video_header">
