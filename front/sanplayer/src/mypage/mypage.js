@@ -2,12 +2,13 @@ import './mypage.css';
 import {
     Link
 } from "react-router-dom";
-import React from 'react';
+import React, { useState } from 'react';
 import View from './view';
 import Data from './data';
 import Save from './save';
 import Home from '../home.png';
 import Logo from '../logo.png';
+import User_Info from './user_info';
 
 const Mypage = ({items}) => {
     return (
@@ -19,10 +20,10 @@ const Mypage = ({items}) => {
                     <img id="mountain2" src={Logo} />
                     <img id="mountain3" src={Logo} />
                 </div>
-                <Link to="/mainpage">
-                    <button id="home">MAIN PAGE</button>
+                <Link to="/mainpage" className='mainpagelink'>
+                    <button className="home">MAIN PAGE</button>
                 </Link>
-
+                <User_Info/>
             </div>
 
             <View items={items[0]}/>

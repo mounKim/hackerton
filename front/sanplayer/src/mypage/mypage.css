@@ -21,13 +21,13 @@
 }
 
 .mypage_header img {
-    margin: 10px;
+    margin-top: 20px;
     width: 240px;
     height: 135px;
 }
 
 
-.data a{
+.mypage_header .data a{
     /* float:left; */
     display : flex;
     flex-direction: row;
@@ -38,7 +38,7 @@
     /* width : 150px; */
 }
 
-.data button {
+.mypage_header .data button {
     /* margin-left: 4%; */
     font-size: 20px;
     width : 170px;
@@ -59,7 +59,7 @@
           0 8px 8px 1px rgba(29, 25, 33, 0.5); */
 }
 
-.wrapper{
+.mypage_header .wrapper{
     margin-left : 10%;
     margin-right: 10%;
     margin-top: 10px;
@@ -84,27 +84,28 @@
 .mypage_header .head {
     margin-left : 7%;
     margin-right: 7%;
-    margin-bottom:30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding:20px;
+    padding-left:20px;
+    padding-right:20px;
+    border-bottom: 1px dashed rgb(43, 45, 112);
+    height: 140px;
 }
 
-.head h1 {
-    margin-top: 10px;
+.mypage_header .head h1 {
+    margin-top: 20px;
     text-align: left;
     padding: 20px;
     margin-left : 20px;
     font-size: 40px;
-    border-bottom: 1px dashed rgb(43, 45, 112);
     /* text-shadow: 3px 3px 6px  rgb(43, 86, 112); */
 }
 
-.head #home{
-    margin-top: 20px;
+.mypage_header .head .home{
     font-size: 22px;
-    margin-right : 20px;
+    width: 100%;
+    height: 100%;
     padding: 20px;
     border : none;
     color: white;
@@ -119,9 +120,53 @@
           0 8px 8px 1px rgba(0,0,0,0.5); */
 }
 
-div #user_info{
-    font-size: 30px;
+.mypage_header div #user_info{
+    font-size: 15px;
     font-weight: bolder;
-    color:rgb(116, 134, 114);
+    color:rgb(136, 151, 105);
     margin-bottom: 10px;
+}
+
+.mypage_header .mainpagelink {
+    width: 120px;
+    height: 90px;
+    padding-top: 25px;
+}
+
+.mypage_header .head .userinfo_box{
+    font-size: 22px;
+    width: 130px;
+    height: 80px;
+    padding: 15px;
+    border: 2px dotted;
+    border-radius: 30px;
+    text-align: center;
+    transition: top .01s linear;
+    margin-top: 3px;
+    background-color: transparent;
+    /* box-shadow: 0 0 0 0px #7fccde inset,
+          0 0 0 2px rgba(179, 220, 227, 0.15) inset,
+          0 8px 0 0 rgba(107, 167, 180, 0.6),
+          0 8px 0 1px rgba(145, 158, 199, 0.4),
+          0 8px 8px 1px rgba(0,0,0,0.5); */
+}
+
+
+.mypage_header .head .logout{
+    font-size: 15px;
+    width: 100px;
+    height: 30px;
+    padding: 5px;
+    border : none;
+    color: white;
+    border-radius: 20px;
+    text-align: center;
+    margin-top:10px;
+    transition: top .01s linear;
+    background-color: rgb(136, 151, 105);
+    /* box-shadow: 0 0 0 0px #7fccde inset,
+          0 0 0 2px rgba(179, 220, 227, 0.15) inset,
+          0 8px 0 0 rgba(107, 167, 180, 0.6),
+          0 8px 0 1px rgba(145, 158, 199, 0.4),
+          0 8px 8px 1px rgba(0,0,0,0.5); */
 }

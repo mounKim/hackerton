@@ -37,7 +37,6 @@ class ViewBlock extends React.Component {
     render() {
         return (
             <div className="wrapper">
-            <div id = "user_info">{this.state.user} 님의 기록</div>
             <h2>동영상 시청 목록</h2>
                 <div className="container">
                     {this.state.watch_list}
