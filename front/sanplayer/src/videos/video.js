@@ -34,6 +34,8 @@ class Video_comp extends React.Component {
         recom_list: (<div> </div>),
         like: false,
         islive: null,
+        volume: 1,
+        isVolume: false
     };
     constructor(props) {
         super(props);
@@ -104,7 +106,6 @@ class Video_comp extends React.Component {
                         in_it = true;
                     }
                 }
-                console.log(response.data);
             })
             if(in_it) {
                 this.setState({
@@ -340,6 +341,31 @@ class Video_comp extends React.Component {
         // console.log(this.levelmap[level]);
     };
 
+    toggleVolume = () => {
+        const video = document.getElementById('video');
+        const range = document.getElementById('range');
+        if(this.state.isVolume) {
+            video.muted = false;
+            console.log(range);
+            this.setState({isVolume: false});
+        } else {
+            video.muted = true;
+            this.setState({isVolume: true});
+        }
+    };
+
+    volumeChangeHandler = (event) => {
+        const video = document.getElementById('video');
+        const newVolume = event.target.value / 10;
+        this.setState({volume: newVolume});
+        if(!newVolume) {
+            video.muted = true;
+            return;
+        }
+        video.muted = false;
+        video.volume = newVolume;
+    }
+
     async componentWillUnmount(){
         await this.handleBeforeUnload();
     }
@@ -363,6 +389,15 @@ class Video_comp extends React.Component {
                                 <button className='btn_like' onClick={this.handleSave}>{this.state.like?<BsHeartFill />:<BsHeart />}</button>
                                 <button className='btn_back' onClick={this.goBack}><BsFillSkipBackwardCircleFill /></button>
                                 <button className='btn_forw' onClick={this.goFront}><BsFillSkipForwardCircleFill /></button>
+                                <button className="button-volume" onClick={this.toggleVolume}>
+                                {this.state.isVolume?
+                                    <img className="v_img" src="../mute.png" width="20px" height="20px" alt="mute" /> :
+                                    <img className="v_img" src="../volume.png" width="20px" height="20px" alt="sound" />
+                                }
+                                </button>
+                                <input id="range" className="v_range" type="range" min="0" max="10"
+                                    onChange={this.volumeChangeHandler}
+                                />
                                 <select id="optionSpeed" onChange={this.handleSpeed} defaultValue="normal">
                                     <option value="slow">0.5</option>
                                     <option value="slow_normal">0.75</option>
