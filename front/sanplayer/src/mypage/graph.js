@@ -15,6 +15,7 @@ class Graph_comp extends React.Component {
     async componentDidMount() {
         var user = sessionStorage.getItem('user_id');
         const sq_id = this.props.param.id;
+        console.log(sq_id)
         try {
             await axios.get(`http://127.0.0.1:8000/graph/?sq_id=`+sq_id)
             .then(function(response) {

@@ -1,8 +1,8 @@
 .mypage_header {
     width: 100%;
     height: 100%;
-    background-color: #e9f8e2;
-    color: white;
+    background-color: #eaeec8;
+    color: rgb(136, 151, 105);
     position:relative;
 }
 
@@ -15,15 +15,15 @@
 }
 
 .mypage_header .image {
-    padding: 5px 20px;
+    padding: 5px 5px;
     display: flex;
     flex-direction: column;
 }
 
 .mypage_header img {
     margin: 10px;
-    width: 80px;
-    height: 80px;
+    width: 240px;
+    height: 135px;
 }
 
 
@@ -35,6 +35,7 @@
     padding:10px;
     padding-left : 48px;
     text-decoration: none;
+    /* width : 150px; */
 }
 
 .data button {
@@ -50,18 +51,19 @@
     border-radius: 30px;
     text-align: center;
     transition: top .01s linear;
-    background-color: #7fccde;
-    box-shadow: 0 0 0 1px #7fccde inset,
-          0 0 0 2px rgba(255,255,255,0.15) inset,
-          0 8px 0 0 rgba(102, 164, 178, .6),
-          0 8px 0 1px rgba(0,0,0,.4),
-          0 8px 8px 1px rgba(0,0,0,0.5);
+    background-color: #cec5db;
+    /* box-shadow: 0 0 0 0px #d4b1ff inset,
+          0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+          0 8px 0 0 rgba(173, 115, 186, 0.6),
+          0 8px 0 1px rgba(113, 70, 118, 0.4),
+          0 8px 8px 1px rgba(29, 25, 33, 0.5); */
 }
 
 .wrapper{
     margin-left : 10%;
     margin-right: 10%;
     margin-top: 10px;
+    height:350px;
 }
 
 .mypage_header h2 {
@@ -69,6 +71,9 @@
     text-align: left;
     padding: 15px 30px;
     font-size: 30px;
+    /* color:rgb(255, 255, 255); */
+    /* background-color: #c8cfa7; */
+    /* text-shadow: 2px 2px 2px gray; */
 }
 
 .mypage_header h3 {
@@ -79,6 +84,7 @@
 .mypage_header .head {
     margin-left : 7%;
     margin-right: 7%;
+    margin-bottom:30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -86,17 +92,17 @@
 }
 
 .head h1 {
-    margin: 0;
+    margin-top: 10px;
     text-align: left;
     padding: 20px;
     margin-left : 20px;
     font-size: 40px;
     border-bottom: 1px dashed rgb(43, 45, 112);
-    text-shadow: 3px 3px 6px  rgb(43, 86, 112);
+    /* text-shadow: 3px 3px 6px  rgb(43, 86, 112); */
 }
 
 .head #home{
-    font-size: 40px;
+    margin-top: 20px;
     font-size: 22px;
     margin-right : 20px;
     padding: 20px;
@@ -105,10 +111,17 @@
     border-radius: 30px;
     text-align: center;
     transition: top .01s linear;
-    background-color: #7fccde;
-    box-shadow: 0 0 0 1px #7fccde inset,
-          0 0 0 2px rgba(255,255,255,0.15) inset,
-          0 8px 0 0 rgba(102, 164, 178, .6),
-          0 8px 0 1px rgba(0,0,0,.4),
-          0 8px 8px 1px rgba(0,0,0,0.5);
+    background-color: #a9cad0;
+    /* box-shadow: 0 0 0 0px #7fccde inset,
+          0 0 0 2px rgba(179, 220, 227, 0.15) inset,
+          0 8px 0 0 rgba(107, 167, 180, 0.6),
+          0 8px 0 1px rgba(145, 158, 199, 0.4),
+          0 8px 8px 1px rgba(0,0,0,0.5); */
+}
+
+div #user_info{
+    font-size: 30px;
+    font-weight: bolder;
+    color:rgb(116, 134, 114);
+    margin-bottom: 10px;
 }
