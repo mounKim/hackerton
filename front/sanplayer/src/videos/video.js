@@ -33,6 +33,7 @@ class Video_comp extends React.Component {
         current_playing: false,
         recom_list: (<div> </div>),
         like: false,
+        islive: null,
     };
     constructor(props) {
         super(props);
@@ -103,6 +104,7 @@ class Video_comp extends React.Component {
                         in_it = true;
                     }
                 }
+                console.log(response.data);
             })
             if(in_it) {
                 this.setState({
@@ -114,15 +116,18 @@ class Video_comp extends React.Component {
         }
 
         const video = document.getElementById('video');
-        const hls = new Hls({startPosition : 0});
+        const hls = new Hls({startLevel:0});
         const optionDropdown = document.getElementById('optionDropdown');
 
         let levelmap = [];
+        let cur_tag = this;
 
         hls.on(Hls.Events.MANIFEST_PARSED, async function (event, data) {
             let bitrate_resource = [];
             let resolution = [];
             var isLIVE = hls.levels[0].details == null;
+            cur_tag.setState({islive: isLIVE});
+            // console.log(isLIVE);
             if (isLIVE) {
                 // console.log('Video is Live');
                 this.type = 'live';
@@ -151,7 +156,7 @@ class Video_comp extends React.Component {
                     hls.loadLevel = i;
                 }
             }
-            
+            hls.currentLevel = 0;
             try {
                 await axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
                     'user_id': user,
@@ -171,8 +176,6 @@ class Video_comp extends React.Component {
                 console.error(e);
             }
         });  
-
-        this.levelmap = levelmap;
 
         hls.on(Hls.Events.FRAG_LOADED, async function(event, data) {
             // console.log('=========================================================');
@@ -206,13 +209,15 @@ class Video_comp extends React.Component {
         });
         
         hls.loadSource(link);
-        hls.attachMedia(video);  
+        hls.attachMedia(video);
 
-        hls.currentLevel = 0;
+        this.levelmap = levelmap;
+
 
         // console.log(hls);
 
         this.hlsRef = hls;
+        // this.handle_play();
 
         // window.addEventListener('beforeunload', this.handleBeforeUnload);
     }
@@ -332,7 +337,7 @@ class Video_comp extends React.Component {
         var level = optionDropdown.options[optionDropdown.selectedIndex].value;
         // console.log('Button clicked!', level);
         this.hlsRef.currentLevel = this.levelmap[level];
-        console.log(this.levelmap[level]);
+        // console.log(this.levelmap[level]);
     };
 
     async componentWillUnmount(){
@@ -350,7 +355,7 @@ class Video_comp extends React.Component {
                             </Link>
                         </div>
                         <h2 className="my_h2">{this.state.user === null?'로그인해주세요!':'Sanplayer'}</h2>            
-                        <h3 className="my_h3">{this.state.name === null ? 'Loading...' : this.state.name}</h3>
+                        <h3 className="my_h3">{this.state.name === null ? 'Loading...' : this.state.name} {this.state.islive?'[LIVE]':''}</h3>
                         <div className='video_container'>
                             <video controls payload="" id="video"></video>
                             <div className='container'>
