@@ -32,6 +32,7 @@ video::-webkit-media-controls-play-button {
     overflow:auto;
     background-color: #C7EBFF;
     float:left;
+    width: 100%;
 }
 
 .videos_header .selectedmountain {
