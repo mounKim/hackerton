@@ -158,14 +158,14 @@ class StreamingQualityView(APIView):
     
     
 class GraphView(APIView):
-    def get(self, request, pk):
+    def get(self, request):
         sq_id = request.GET.dict()['sq_id']
         sq = StreamingQuality.objects.get(pk=sq_id)
         graph = Graph.objects.get(sq_id=sq)
         serializer = GraphSerializer(graph)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, pk):
+    def post(self, request):
         json_data = json.loads(request.body)
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print(json_data)
