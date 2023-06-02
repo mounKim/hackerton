@@ -80,7 +80,7 @@ class Video_comp extends React.Component {
                 d.img_link = "http://127.0.0.1:8000/" + d.image;
             })
             var recom_list = recom_data2.map((d) => 
-                <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br />{d.video_name}</div>); 
+                <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br /><h3 className='my_h3'>{d.video_name}</h3></div>); 
             this.setState({
                 user: user,
                 link: link,
