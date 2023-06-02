@@ -37,6 +37,7 @@ class Video_comp extends React.Component {
         super(props);
         this.videoRef = React.createRef();
         this.hlsRef = null;
+        this.levelmap = [];
     }
 
     async componentDidMount() {
@@ -104,8 +105,10 @@ class Video_comp extends React.Component {
     }
 
         const video = document.getElementById('video');
-        const hls = new Hls();
+        const hls = new Hls({startPosition : 0});
         const optionDropdown = document.getElementById('optionDropdown');
+
+        let levelmap = [];
 
         hls.on(Hls.Events.MANIFEST_PARSED, async function (event, data) {
             let bitrate_resource = [];
@@ -125,13 +128,19 @@ class Video_comp extends React.Component {
                 const option = document.createElement('option');
                 option.value = i;
                 // console.log(data.levels[i])
-                option.textContent = `${data.levels[i]['name']}p`;
-                optionDropdown.appendChild(option);
-                
-                bitrate_resource.push(`${data.levels[i]['bitrate']}`);
-                resolution.push(`${data.levels[i]['width']}X${data.levels[i]['height']}`);
-                await sleep(200);
-                hls.loadLevel = i;
+                // option.textContent = `${data.levels[i]['name']}p`;
+                let cur_res = `${data.levels[i]['width']}X${data.levels[i]['height']}`;
+                if(!(resolution.includes(cur_res))){
+                    // console.log(cur_res)
+                    option.textContent = cur_res;
+                    levelmap.push(i);
+                    optionDropdown.appendChild(option);
+                    
+                    bitrate_resource.push(`${data.levels[i]['bitrate']}`);
+                    resolution.push(cur_res);
+                    await sleep(200);
+                    hls.loadLevel = i;
+                }
             }
             
             try {
@@ -153,6 +162,8 @@ class Video_comp extends React.Component {
                 console.error(e);
             }
         });  
+
+        this.levelmap = levelmap;
 
         hls.on(Hls.Events.FRAG_LOADED, async function(event, data) {
             // console.log('=========================================================');
@@ -263,7 +274,7 @@ class Video_comp extends React.Component {
                 category: this.state.category,
                 current_playing: false,
                 recom_list: this.state.recom_list,
-                like: this.start.like,
+                like: this.state.like,
             });
         } else {
             this.start();
@@ -275,7 +286,7 @@ class Video_comp extends React.Component {
                 category: this.state.category,
                 current_playing: true,
                 recom_list: this.state.recom_list,
-                like: this.start.like,
+                like: this.state.like,
             })
         }
     }
@@ -300,7 +311,8 @@ class Video_comp extends React.Component {
         const optionDropdown = document.getElementById('optionDropdown');
         var level = optionDropdown.options[optionDropdown.selectedIndex].value;
         // console.log('Button clicked!', level);
-        this.hlsRef.currentLevel = level;
+        this.hlsRef.currentLevel = this.levelmap[level];
+        console.log(this.levelmap[level]);
     };
 
     handleZeroClick = () => {

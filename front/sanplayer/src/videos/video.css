@@ -26,7 +26,6 @@ video::-webkit-media-controls-play-button {
 .video_header #video {
     width: 800px;
     height: 450px;
-    pointer-events: none;
     margin-bottom: 3px;
 }
 
@@ -92,7 +91,7 @@ select {
 .video_header #optionSpeed {
     position: absolute;
     top:5px;
-    right:130px;
+    right:160px;
     padding: 4px;
     color:rgb(18, 15, 17);
     background-color: rgb(247, 227, 236);
@@ -107,7 +106,7 @@ select {
     padding: 4px;
     color:rgb(18, 15, 17);
     background-color: rgb(210, 231, 249);
-    width: 120px;
+    width: 150px;
     /* border: transparent; */
 }
 
