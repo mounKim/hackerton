@@ -8,7 +8,8 @@ import {
 import Hls from 'hls.js';
 import User from '../user.png';
 import Main from '../logo.png';
-import {BsPauseCircle, BsPlayCircle, BsHeart, BsHeartFill} from 'react-icons/bs'
+import {BsPauseCircle, BsPlayCircle, BsHeart, BsHeartFill, BsFillSkipBackwardCircleFill, BsFillSkipForwardCircleFill
+} from 'react-icons/bs'
 
 var downloadBitrateData = [];
 var selectedBitrateData = [];
@@ -102,7 +103,6 @@ class Video_comp extends React.Component {
                         in_it = true;
                     }
                 }
-                console.log(response.data);
             })
             if(in_it) {
                 this.setState({
@@ -271,6 +271,17 @@ class Video_comp extends React.Component {
         video.muted = true;
         video.pause();
     }
+    
+    goBack = () => {
+        const video = document.getElementById('video');
+        video.currentTime = video.currentTime - 5;
+    }
+
+    goFront = () => {
+        const video = document.getElementById('video');
+        video.currentTime = video.currentTime + 5;
+
+    }
 
     handle_play = () => {
         if(this.state.current_playing == true) {
@@ -324,22 +335,11 @@ class Video_comp extends React.Component {
         console.log(this.levelmap[level]);
     };
 
-    handleZeroClick = () => {
-        // console.log('Button clicked!');
-        this.hlsRef.currentLevel = 0;
-    };
-
-    handleAutoClick = () => {
-        // console.log('Button clicked!');
-        this.hlsRef.currentLevel = -1; // Auto resolution switching
-    };
-
     async componentWillUnmount(){
         await this.handleBeforeUnload();
     }
 
     render() {
-        console.log(this.state.like);
         return(
             <ConditionalLink to="../login/" condition={this.state.user === null} style={{ textDecoration: "none" }}>
                 <div className="video_header">
@@ -356,6 +356,8 @@ class Video_comp extends React.Component {
                             <div className='container'>
                                 <button className='btn_play' onClick={this.handle_play}>{this.state.current_playing?<BsPauseCircle />:<BsPlayCircle />}</button>
                                 <button className='btn_like' onClick={this.handleSave}>{this.state.like?<BsHeartFill />:<BsHeart />}</button>
+                                <button className='btn_back' onClick={this.goBack}><BsFillSkipBackwardCircleFill /></button>
+                                <button className='btn_forw' onClick={this.goFront}><BsFillSkipForwardCircleFill /></button>
                                 <select id="optionSpeed" onChange={this.handleSpeed} defaultValue="normal">
                                     <option value="slow">0.5</option>
                                     <option value="slow_normal">0.75</option>

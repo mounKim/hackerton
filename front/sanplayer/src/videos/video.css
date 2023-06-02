@@ -77,6 +77,24 @@ video::-webkit-media-controls-play-button {
     border: transparent;
 }
 
+.video_header .btn_back {
+    position: absolute;   
+    top: 2px;
+    left: 120px;
+    font-size: 40px;
+    background-color: transparent;
+    border: transparent;
+}
+
+.video_header .btn_forw {
+    position: absolute;
+    top: 2px;
+    left: 180px;
+    font-size: 40px;
+    background-color: transparent;
+    border: transparent;
+}
+
 select {
     font-size: 25px;
     /* width : 50em; */
