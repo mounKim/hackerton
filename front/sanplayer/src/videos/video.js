@@ -8,7 +8,7 @@ import {
 import Hls from 'hls.js';
 import User from '../user.png';
 import Main from '../logo.png';
-import {BsPauseCircle, BsPlayCircle, BsHeart, BsHeartFill, BsFillSkipBackwardCircleFill, BsFillSkipForwardCircleFill
+import {BsPauseCircle, BsPlayCircle, BsHeart, BsHeartFill, BsSkipBackward, BsSkipForward
 } from 'react-icons/bs'
 
 var downloadBitrateData = [];
@@ -387,8 +387,8 @@ class Video_comp extends React.Component {
                             <div className='container'>
                                 <button className='btn_play' onClick={this.handle_play}>{this.state.current_playing?<BsPauseCircle />:<BsPlayCircle />}</button>
                                 <button className='btn_like' onClick={this.handleSave}>{this.state.like?<BsHeartFill />:<BsHeart />}</button>
-                                <button className='btn_back' onClick={this.goBack}><BsFillSkipBackwardCircleFill /></button>
-                                <button className='btn_forw' onClick={this.goFront}><BsFillSkipForwardCircleFill /></button>
+                                <button className='btn_back' onClick={this.goBack}><BsSkipBackward /></button>
+                                <button className='btn_forw' onClick={this.goFront}><BsSkipForward /></button>
                                 <button className="button-volume" onClick={this.toggleVolume}>
                                 {this.state.isVolume?
                                     <img className="v_img" src="../mute.png" width="20px" height="20px" alt="mute" /> :
