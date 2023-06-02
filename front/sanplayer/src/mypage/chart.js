@@ -33,14 +33,14 @@ class Chart_comp extends React.Component {
     render() {
         const chartListToShow = this.state.sq_data ? this.state.sq_data.slice(0, 10) : null;
         return (
-            <div className='wrapper'>
+            <div className='wrapper chart_page'>
                 <div className='head'>
-                    <h2>동영상 품질 데이터</h2>
+                    <h2>Streaming Quality Data</h2>
                     <div className='mountains'>
                         <img id="mountain1" src={Logo} />
                     </div>
-                    <Link to="/mypage">
-                    <button id="mypage_button">MYPAGE</button>
+                    <Link to="/mypage">MYPAGE
+                    {/* <button id="mypage_button">MYPAGE</button> */}
                     </Link>
                 </div>
 
@@ -74,7 +74,7 @@ class Chart_comp extends React.Component {
                         </table>
                     </div>
                 ) : (
-                    <div>Loading chart data...</div>
+                    <div id="loading_chart">Loading chart data...</div>
                 )}
             </div>
         )

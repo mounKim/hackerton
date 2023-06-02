@@ -1,8 +1,10 @@
-body{
+.chart_page{
     background-color: rgb(240, 223, 255);
+    padding:0;
+    margin:0;
 }
 
-.head {
+.chart_page .head {
     margin-left : 7%;
     margin-right: 7%;
     margin-bottom:30px;
@@ -12,7 +14,7 @@ body{
     padding:20px;
 }
 
-.head h2 {
+.chart_page .head h2 {
     margin-top: 10px;
     text-align: left;
     padding: 20px;
@@ -23,23 +25,26 @@ body{
     /* text-shadow: 3px 3px 6px  rgb(43, 86, 112); */
 }
 
-.head img {
+.chart_page .head img {
     margin: 10px;
     width: 240px;
     height: 135px;
 }
 
-.head #mypage_button{
+.chart_page .head a{
     margin-top: 20px;
     font-size: 22px;
     margin-right : 20px;
-    padding: 20px;
+    padding: 10px;
+    height: 30px;
+    width: 110px;
+    text-decoration: none;
     border : none;
     color: rgb(255, 255, 255);
     border-radius: 30px;
     text-align: center;
     transition: top .01s linear;
-    background-color: #c2e094;
+    background-color: #c494e0;
     /* box-shadow: 0 0 0 0px #7fccde inset,
           0 0 0 2px rgba(179, 220, 227, 0.15) inset,
           0 8px 0 0 rgba(107, 167, 180, 0.6),
@@ -47,7 +52,17 @@ body{
           0 8px 8px 1px rgba(0,0,0,0.5); */
 }
 
+.chart{
+  padding :10px;
+  background-color: rgb(240, 223, 255);
+}
 
+#loading_chart{
+  font-size: 25px;
+  color: white;
+  text-shadow: 2px 2px 3px rgb(132, 13, 192);
+  padding:100px;
+}
 .responsive-table {
     width: 100%;
     margin-bottom: 1.5em;
@@ -119,15 +134,6 @@ body{
     background-color: #7645be;
     color: white;
 }
-.responsive-table tbody td[data-type=currency] {
-    text-align: right;
-}
-.responsive-table tbody td[data-title]:before {
-    content: attr(data-title);
-    float: left;
-    font-size: .8em;
-    color: rgba(94, 93, 82, 0.75);
-}
 
 .responsive-table tbody {
     display: table-row-group;
@@ -137,7 +143,10 @@ body{
     border-width: 1px;
   }
   .responsive-table tbody tr:nth-of-type(even) {
-    background-color: rgba(94, 93, 82, 0.1);
+    background-color: rgba(231, 224, 231, 0.968);
+  }
+  .responsive-table tbody tr:nth-of-type(odd) {
+    background-color: rgb(248, 244, 250);
   }
   .responsive-table tbody th[scope="row"] {
     background-color: transparent;

@@ -19,8 +19,8 @@ const Mypage = ({items}) => {
                     <img id="mountain2" src={Logo} />
                     <img id="mountain3" src={Logo} />
                 </div>
-                <Link to="/mainpage">
-                    <button id="home">MAIN PAGE</button>
+                <Link to="/mainpage">MAINPAGE
+                    {/* <button id="home">MAIN PAGE</button> */}
                 </Link>
 
             </div>
