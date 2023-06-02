@@ -34,7 +34,7 @@ class Video_comp extends React.Component {
         recom_list: (<div> </div>),
         like: false,
         islive: null,
-        volume: 1,
+        volume: 0.5,
         isVolume: false
     };
     constructor(props) {
@@ -346,10 +346,11 @@ class Video_comp extends React.Component {
         const range = document.getElementById('range');
         if(this.state.isVolume) {
             video.muted = false;
-            console.log(range);
+            range.value = 5;
             this.setState({isVolume: false});
         } else {
             video.muted = true;
+            range.value = 0;
             this.setState({isVolume: true});
         }
     };
