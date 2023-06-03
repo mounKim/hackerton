@@ -72,7 +72,7 @@ class VideoComp extends React.Component {
             });   
             var recom_data2 = [];
             for(var i = 0; i < recom_data.length; i++) {
-                if(videoid != recom_data[i]['id']) {
+                if(Number(videoid) !== Number(recom_data[i]['id'])) {
                     recom_data2.push(recom_data[i]);
                 }
             }
@@ -119,7 +119,7 @@ class VideoComp extends React.Component {
             await axios.get("http://127.0.0.1:8000/saved_video/?user_id="+user)
             .then(function(response) {
                 for(var i = 0; i < response.data.length; i++) {
-                    if(response.data[i]['id'] === videoid) {
+                    if(Number(response.data[i]['id']) === Number(videoid)) {
                         in_it = true;
                     }
                 }
