@@ -144,8 +144,8 @@ class StreamingQualityView(APIView):
         except AssertionError:
             raise Http404('Any watched video does not exist in WatchedVideo(username = {user_id})')
         video_url = video.video_url
-        bitrate_resource = request.data.getlist('bitrate_resource') 
-        resolution = request.data.getlist('resolution') 
+        bitrate_resource = request.data.get('bitrate_resource') 
+        resolution = request.data.get('resolution') 
         streaming_type = request.data.get('streaming_type')
         protocol = request.data.get('protocol')
 
