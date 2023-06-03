@@ -48,7 +48,13 @@ class Videos extends React.Component {
                 </div>
             )
         }
-        else{
+        else if(this.categoryinfo === null){
+            return(
+                <div className ='videolist'>
+                    <h2 className='nomountain'>로딩 중에 오류가 발생했어요... 새로고침 후 다시 시도해주세요!</h2>
+                </div>
+            )
+        } else if(this.categoryinfo[this.props.index].video !== null) {
             return(
                 <div className ='videolist'>
                     <h2 className='selectedmountain'>{this.categoryinfo[this.props.index].name}</h2>
@@ -76,6 +82,12 @@ class Videos extends React.Component {
                     </div>
                 </div>
             )
+        } else {
+            return(
+                <div className ='videolist'>
+                    <h2 className='nomountain'>로딩 중에 오류가 발생했어요... 새로고침 후 다시 시도해주세요!</h2>
+                </div>
+            )
         }
     }
 }
@@ -95,10 +107,6 @@ function Mt (props){
 }
 
 class Mountains extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    
     renderMountain(i){
         if(this.props.categoryinfo[i] == null){
             return <div />;
@@ -157,7 +165,7 @@ class MainPage extends React.Component {
                         categorylist[i].video = response_cat.data;
                     });
                 }
-                if(max == min){
+                if(max === min){
                     for(let i = 0; i < 8; i++)
                         categorylist[i].recommand = 5;
                 }
