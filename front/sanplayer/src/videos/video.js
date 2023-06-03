@@ -1,5 +1,5 @@
 import './video.css';
-import React, {useEffect} from 'react';
+import React from 'react';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 import {
@@ -23,7 +23,7 @@ const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-class Video_comp extends React.Component {
+class VideoComp extends React.Component {
     state = {
         user: sessionStorage.getItem('user_id'),
         link: null,
@@ -72,15 +72,15 @@ class Video_comp extends React.Component {
             });   
             var recom_data2 = [];
             for(var i = 0; i < recom_data.length; i++) {
-                if(videoid != recom_data[i]['id']) {
+                if(videoid !== recom_data[i]['id']) {
                     recom_data2.push(recom_data[i]);
                 }
             }
             // console.log(recom_data2);
-            recom_data2.map((d) => {
-                d.link = "./" + d.id;
-                d.img_link = "http://127.0.0.1:8000/" + d.image;
-            })
+            recom_data2.map((d) => ({
+                link: "./" + d.id,
+                img_link: "http://127.0.0.1:8000/" + d.image,
+            }))
             var recom_list = recom_data2.map((d) => 
                 <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br /><h3 className='my_h3'>{d.video_name}</h3></div>); 
             this.setState({
@@ -102,7 +102,7 @@ class Video_comp extends React.Component {
             await axios.get("http://127.0.0.1:8000/saved_video/?user_id="+user)
             .then(function(response) {
                 for(var i = 0; i < response.data.length; i++) {
-                    if(response.data[i]['id'] == videoid) {
+                    if(response.data[i]['id'] === videoid) {
                         in_it = true;
                     }
                 }
@@ -290,7 +290,7 @@ class Video_comp extends React.Component {
     }
 
     handle_play = () => {
-        if(this.state.current_playing == true) {
+        if(this.state.current_playing === true) {
             this.stop();
             this.setState({
                 user: this.state.user,
@@ -320,13 +320,13 @@ class Video_comp extends React.Component {
     handleSpeed = () => {
         var value = document.getElementById('optionSpeed');
         var select = value.options[value.selectedIndex].value;
-        if(select == 'slow') {
+        if(select === 'slow') {
             document.getElementById('video').playbackRate = 0.5;
-        } else if(select == 'slow_normal') {
+        } else if(select === 'slow_normal') {
             document.getElementById('video').playbackRate = 0.75;
-        } else if(select == 'normal') {
+        } else if(select === 'normal') {
             document.getElementById('video').playbackRate = 1.0;
-        } else if(select == 'normal_high') {
+        } else if(select === 'normal_high') {
             document.getElementById('video').playbackRate = 1.25;
         } else {
             document.getElementById('video').playbackRate = 1.5;
@@ -435,5 +435,5 @@ function ConditionalLink({ children, condition, ...props }) {
 
 export default function Video() {
     let params = useParams();
-    return <Video_comp param={params}/>
+    return <VideoComp param={params}/>
 }
