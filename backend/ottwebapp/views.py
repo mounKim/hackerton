@@ -62,13 +62,15 @@ class WatchedVideoView(APIView):
         # user_id = request.data.get('user_id')
         user_id = request.GET.dict()['user_id']
         user = User.objects.get(username=user_id)
-        watched_videos = WatchedVideo.objects.filter(user_id=user)
+        watched_videos = WatchedVideo.objects.filter(user_id=user).order_by('-updated_at')
         video_ids = watched_videos.values_list('video_id', flat=True)
         videos = []
         if len(video_ids) > 0:
             videos.append(VideoList.objects.filter(id__in=[video_ids[0]]).first())
+            print(videos)
             for i in video_ids[1:]:
                 videos.append(VideoList.objects.filter(id__in=[i]).first())
+                print(videos)
         else:
             videos = VideoList.objects.filter(id__in=video_ids)
         serializer = VideoListSerializer(videos, many=True)
@@ -78,13 +80,13 @@ class WatchedVideoView(APIView):
         user_id = request.data.get('user_id')
         user = User.objects.get(username=user_id)
         pk = int(request.data.get('video_id'))
+        time = request.data.get('time')
         try:
             get_video = VideoList.objects.get(pk=pk)
         except VideoList.DoesNotExist:
             raise Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
-        watched_videos = WatchedVideo.objects.filter(user_id=user)
-        video_ids = watched_videos.values_list('video_id', flat=True)
-        watched_video = WatchedVideo(user_id=user, video_id=get_video)
+        video_ids = WatchedVideo.objects.filter(user_id=user).values_list('video_id', flat=True)
+        watched_video = WatchedVideo(user_id=user, video_id=get_video, updated_at=time)
         if pk in video_ids:
             WatchedVideo.objects.get(user_id=user, video_id=pk).delete()
         watched_video.save()
@@ -154,9 +156,9 @@ class StreamingQualityView(APIView):
         except AssertionError:
             raise Http404('Any watched video does not exist in WatchedVideo(username = {user_id})')
         video_url = video.video_url
-        bitrate_resource = request.data.getlist('bitrate_resource') 
-        resolution = request.data.getlist('resolution') 
-        streaming_type = request.data.get('streaming_type')
+        bitrate_resource = request.data['bitrate_resource']
+        resolution = request.data['resolution']
+        streaming_type = request.data['streaming_type']
         protocol = request.data.get('protocol')
 
         streaming_quality = StreamingQuality(

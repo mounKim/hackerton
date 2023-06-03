@@ -83,8 +83,10 @@ class VideoComp extends React.Component {
             })
             */
             recom_data2.map((d) => {
-                d.link = "./" + d.id;
-                d.img_link = "http://127.0.0.1:8000/" + d.image;
+                return d.link = "./" + d.id;
+            })
+            recom_data2.map((d) => {
+                return d.img_link = "http://127.0.0.1:8000/" + d.image;
             })
             var recom_list = recom_data2.map((d) => 
                 <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br /><h3 className='my_h3'>{d.video_name}</h3></div>); 
@@ -105,7 +107,8 @@ class VideoComp extends React.Component {
         try {
             await axios.post(`http://127.0.0.1:8000/watched_video/`, {
                 'user_id': user,
-                'video_id': videoid
+                'video_id': videoid,
+                'time': Date.now()
             })
             .then(function(response) {
                 console.log(response);
@@ -272,7 +275,8 @@ class VideoComp extends React.Component {
             await axios.post('http://127.0.0.1:8000/saved_video/', {
                 'user_id': this.state.user,
                 'video_id': this.state.videoid,
-                'like': this.state.like
+                'like': this.state.like,
+                'time': Date.now()
             })
             .then(function(response) {
                 console.log(response);
