@@ -64,7 +64,13 @@ class WatchedVideoView(APIView):
         user = User.objects.get(username=user_id)
         watched_videos = WatchedVideo.objects.filter(user_id=user)
         video_ids = watched_videos.values_list('video_id', flat=True)
-        videos = VideoList.objects.filter(id__in=video_ids)
+        videos = []
+        if len(video_ids) > 0:
+            videos.append(VideoList.objects.filter(id__in=[video_ids[0]]).first())
+            for i in video_ids[1:]:
+                videos.append(VideoList.objects.filter(id__in=[i]).first())
+        else:
+            videos = VideoList.objects.filter(id__in=video_ids)
         serializer = VideoListSerializer(videos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)        
     
@@ -76,7 +82,11 @@ class WatchedVideoView(APIView):
             get_video = VideoList.objects.get(pk=pk)
         except VideoList.DoesNotExist:
             raise Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+        watched_videos = WatchedVideo.objects.filter(user_id=user)
+        video_ids = watched_videos.values_list('video_id', flat=True)
         watched_video = WatchedVideo(user_id=user, video_id=get_video)
+        if pk in video_ids:
+            WatchedVideo.objects.get(user_id=user, video_id=pk).delete()
         watched_video.save()
 
         row = UserCategory.objects.get(user_id=user)

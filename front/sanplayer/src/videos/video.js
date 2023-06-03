@@ -72,15 +72,20 @@ class VideoComp extends React.Component {
             });   
             var recom_data2 = [];
             for(var i = 0; i < recom_data.length; i++) {
-                if(videoid !== recom_data[i]['id']) {
+                if(videoid != recom_data[i]['id']) {
                     recom_data2.push(recom_data[i]);
                 }
             }
-            // console.log(recom_data2);
-            recom_data2.map((d) => ({
-                link: "./" + d.id,
-                img_link: "http://127.0.0.1:8000/" + d.image,
-            }))
+            /*           
+            recom_data2.map((d) => {
+                d.link = "./" + d.id;
+                d.img_link = "http://127.0.0.1:8000/" + d.image;
+            })
+            */
+            recom_data2.map((d) => {
+                d.link = "./" + d.id;
+                d.img_link = "http://127.0.0.1:8000/" + d.image;
+            })
             var recom_list = recom_data2.map((d) => 
                 <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br /><h3 className='my_h3'>{d.video_name}</h3></div>); 
             this.setState({
@@ -93,6 +98,18 @@ class VideoComp extends React.Component {
                 recom_list: recom_list,
                 like: false
             });
+        } catch(e) {
+            console.error(e);
+        }
+
+        try {
+            await axios.post(`http://127.0.0.1:8000/watched_video/`, {
+                'user_id': user,
+                'video_id': videoid
+            })
+            .then(function(response) {
+                console.log(response);
+            })
         } catch(e) {
             console.error(e);
         }
