@@ -89,7 +89,7 @@ class GraphComp extends React.Component {
         var init_time;
         const sq_id = this.props.param.id;
         try {
-            await axios.get(`http://127.0.0.1:8000/graph/?sq_id=`+sq_id)
+            await axios.get(`http://127.0.0.1:8000/graph/?sq_id=`+ sq_id)
             .then(function(response) {
                 init_time = new Date(response.data.sq_id.video_id.updated_at);
                 let cur_time = init_time;
@@ -101,7 +101,7 @@ class GraphComp extends React.Component {
                     graph_data[3].data.push({"x": tmptime, "y": response.data.selected_bitrate[i]})
                     cur_time.setSeconds(cur_time.getSeconds() + Number(response.data.segment_duration[i]));
                 }
-                console.log(graph_data);
+                // console.log(graph_data);
             })
         } catch(e) {
             console.error(e);
