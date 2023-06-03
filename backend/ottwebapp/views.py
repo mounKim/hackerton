@@ -49,12 +49,17 @@ class SaveVideoView(APIView):
         user_id = request.data.get('user_id')
         user = User.objects.get(username=user_id)
         pk = int(request.data.get('video_id'))
+        like = request.data.get('like')
         try:
             get_video = VideoList.objects.get(pk=pk)
         except VideoList.DoesNotExist:
             raise Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
-        save_video = SaveVideo(user_id=user, video_id=get_video)
-        save_video.save()
+        if not like:
+            save_video = SaveVideo(user_id=user, video_id=get_video)
+            save_video.save()
+        else:
+            SaveVideo.objects.get(user_id=user, video_id=pk).delete()
+        
         return Response({'message': 'Video saved successfully'}, status=status.HTTP_201_CREATED)
 
 class WatchedVideoView(APIView):        
@@ -67,10 +72,8 @@ class WatchedVideoView(APIView):
         videos = []
         if len(video_ids) > 0:
             videos.append(VideoList.objects.filter(id__in=[video_ids[0]]).first())
-            print(videos)
             for i in video_ids[1:]:
                 videos.append(VideoList.objects.filter(id__in=[i]).first())
-                print(videos)
         else:
             videos = VideoList.objects.filter(id__in=video_ids)
         serializer = VideoListSerializer(videos, many=True)
@@ -184,8 +187,8 @@ class GraphView(APIView):
 
     def post(self, request):
         json_data = json.loads(request.body)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print(json_data)
+        #print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        #print(json_data)
         sq_id = request.data.get('sq_id')
         sq = StreamingQuality.objects.get(pk=sq_id)
         download_bitrate = request.data.get('download_bitrate')
