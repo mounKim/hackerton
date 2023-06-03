@@ -28,7 +28,7 @@ class VideoDetailView(APIView):
         try:
             return VideoList.objects.get(pk=pk)
         except VideoList.DoesNotExist:
-            raise Http404
+            raise Http404(f'Video(id={pk}) does not exist in VideoList')
         
     def get(self, request, pk, format=None): # video detail 보기
         video = self.get_object(pk)
@@ -119,7 +119,10 @@ class VideoCategoryView(APIView):
     def get(self, request):
         category = request.GET.dict()['category']
         category = category.replace('%20', ' ')
-        videos = VideoCategory.objects.get(category=category).videos.all()
+        try:
+            videos = VideoCategory.objects.get(category=category).videos.all()
+        except VideoCategory.DoesNotExist:
+            raise Http404(f'{category} does not exist in VideoCatetory')
         # videos = VideoList.objects.filter(category=category).values()
         serializer = VideoListSerializer(videos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)   
@@ -140,16 +143,19 @@ class StreamingQualityView(APIView):
         serializer = StreamingQualitySerializer(streaming_qualities, many=True)        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):        
+    def post(self, request):
         user_id = request.data.get('user_id')
         video_id = request.data.get('video_id')
         user = User.objects.get(username=user_id)
         video = VideoList.objects.get(id=video_id)
         videos = WatchedVideo.objects.filter(user_id = user, video_id = video)
-        v = videos[videos.count() -1]
+        try :
+            v = videos[videos.count() -1]
+        except AssertionError:
+            raise Http404('Any watched video does not exist in WatchedVideo(username = {user_id})')
         video_url = video.video_url
-        bitrate_resource = request.data.get('bitrate_resource') 
-        resolution = request.data.get('resolution') 
+        bitrate_resource = request.data.getlist('bitrate_resource') 
+        resolution = request.data.getlist('resolution') 
         streaming_type = request.data.get('streaming_type')
         protocol = request.data.get('protocol')
 
@@ -162,7 +168,6 @@ class StreamingQualityView(APIView):
                                             streaming_type = streaming_type,
                                             protocol = protocol 
                                         )
-
         streaming_quality.save()
         return Response({'message': 'Streaming Quality information saved successfully'}, status=status.HTTP_201_CREATED)
     
