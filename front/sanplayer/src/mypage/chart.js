@@ -46,7 +46,7 @@ class Chart_comp extends React.Component {
 
                 {chartListToShow ? (
                     <div className='chart'>
-                        <table class="responsive-table">
+                        <table className="responsive-table">
                             <thead>
                                 <tr>
                                     <th scope="col">Session Id</th>

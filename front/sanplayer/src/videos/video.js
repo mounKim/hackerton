@@ -1,5 +1,5 @@
 import './video.css';
-import React, {useEffect} from 'react';
+import React from 'react';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 import {
@@ -8,7 +8,8 @@ import {
 import Hls from 'hls.js';
 import User from '../user.png';
 import Main from '../logo.png';
-import {BsPauseCircle, BsPlayCircle, BsHeart, BsHeartFill} from 'react-icons/bs'
+import {BsPauseCircle, BsPlayCircle, BsHeart, BsHeartFill, BsSkipBackward, BsSkipForward
+} from 'react-icons/bs'
 
 var downloadBitrateData = [];
 var selectedBitrateData = [];
@@ -22,7 +23,7 @@ const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-class Video_comp extends React.Component {
+class VideoComp extends React.Component {
     state = {
         user: sessionStorage.getItem('user_id'),
         link: null,
@@ -32,11 +33,15 @@ class Video_comp extends React.Component {
         current_playing: false,
         recom_list: (<div> </div>),
         like: false,
+        islive: null,
+        volume: 0.5,
+        isVolume: false
     };
     constructor(props) {
         super(props);
         this.videoRef = React.createRef();
         this.hlsRef = null;
+        this.levelmap = [];
     }
 
     async componentDidMount() {
@@ -46,18 +51,6 @@ class Video_comp extends React.Component {
         var video_url = null;
         const videoid = this.props.param.id;
         
-        try {
-             await axios.post(`http://127.0.0.1:8000/watched_video/`, {
-                'user_id': user,
-                'video_id': videoid
-            })
-            .then(function(response) {
-                // console.log(response);
-            })
-        } catch(e) {
-            console.error(e);
-        }
-
         try {
             await axios.get(`http://127.0.0.1:8000/videos/`)
             .then(function(response) {
@@ -73,44 +66,69 @@ class Video_comp extends React.Component {
 
         var recom_data = null;
         try {
-        await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
-        .then(function(response) {
-            recom_data = response.data;
-        });   
-        var recom_data2 = [];
-        for(var i = 0; i < recom_data.length; i++) {
-            if(videoid != recom_data[i]['id']) {
-                recom_data2.push(recom_data[i]);
+            await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
+            .then(function(response) {
+                recom_data = response.data;
+            });   
+            var recom_data2 = [];
+            for(var i = 0; i < recom_data.length; i++) {
+                if(videoid !== recom_data[i]['id']) {
+                    recom_data2.push(recom_data[i]);
+                }
             }
+            // console.log(recom_data2);
+            recom_data2.map((d) => ({
+                link: "./" + d.id,
+                img_link: "http://127.0.0.1:8000/" + d.image,
+            }))
+            var recom_list = recom_data2.map((d) => 
+                <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br /><h3 className='my_h3'>{d.video_name}</h3></div>); 
+            this.setState({
+                user: user,
+                link: link,
+                videoid: videoid,
+                name: video_name,
+                category: video_url,
+                current_playing: false,
+                recom_list: recom_list,
+                like: false
+            });
+        } catch(e) {
+            console.error(e);
         }
-        // console.log(recom_data2);
-        recom_data2.map((d) => {
-            d.link = "./" + d.id;
-            d.img_link = "http://127.0.0.1:8000/" + d.image;
-        })
-        var recom_list = recom_data2.map((d) => 
-            <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br />{d.video_name}</div>); 
-        this.setState({
-            user: user,
-            link: link,
-            videoid: videoid,
-            name: video_name,
-            category: video_url,
-            current_playing: false,
-            recom_list: recom_list
-        });
-    } catch(e) {
-        console.error(e);
-    }
+
+        var in_it = false;
+        try {
+            await axios.get("http://127.0.0.1:8000/saved_video/?user_id="+user)
+            .then(function(response) {
+                for(var i = 0; i < response.data.length; i++) {
+                    if(response.data[i]['id'] === videoid) {
+                        in_it = true;
+                    }
+                }
+            })
+            if(in_it) {
+                this.setState({
+                    like: true
+                })
+            }
+        } catch(e) {
+            console.error(e);
+        }
 
         const video = document.getElementById('video');
-        const hls = new Hls();
+        const hls = new Hls({startLevel:0});
         const optionDropdown = document.getElementById('optionDropdown');
+
+        let levelmap = [];
+        let cur_tag = this;
 
         hls.on(Hls.Events.MANIFEST_PARSED, async function (event, data) {
             let bitrate_resource = [];
             let resolution = [];
             var isLIVE = hls.levels[0].details == null;
+            cur_tag.setState({islive: isLIVE});
+            // console.log(isLIVE);
             if (isLIVE) {
                 // console.log('Video is Live');
                 this.type = 'live';
@@ -125,15 +143,21 @@ class Video_comp extends React.Component {
                 const option = document.createElement('option');
                 option.value = i;
                 // console.log(data.levels[i])
-                option.textContent = `${data.levels[i]['name']}p`;
-                optionDropdown.appendChild(option);
-                
-                bitrate_resource.push(`${data.levels[i]['bitrate']}`);
-                resolution.push(`${data.levels[i]['width']}X${data.levels[i]['height']}`);
-                await sleep(200);
-                hls.loadLevel = i;
+                // option.textContent = `${data.levels[i]['name']}p`;
+                let cur_res = `${data.levels[i]['width']}X${data.levels[i]['height']}`;
+                if(!(resolution.includes(cur_res))){
+                    // console.log(cur_res)
+                    option.textContent = cur_res;
+                    levelmap.push(i);
+                    optionDropdown.appendChild(option);
+                    
+                    bitrate_resource.push(`${data.levels[i]['bitrate']}`);
+                    resolution.push(cur_res);
+                    await sleep(200);
+                    hls.loadLevel = i;
+                }
             }
-            
+            hls.currentLevel = 0;
             try {
                 await axios.post(`http://127.0.0.1:8000/streaming_quality/`, {
                     'user_id': user,
@@ -186,13 +210,15 @@ class Video_comp extends React.Component {
         });
         
         hls.loadSource(link);
-        hls.attachMedia(video);  
+        hls.attachMedia(video);
 
-        hls.currentLevel = 0;
+        this.levelmap = levelmap;
+
 
         // console.log(hls);
 
         this.hlsRef = hls;
+        // this.handle_play();
 
         // window.addEventListener('beforeunload', this.handleBeforeUnload);
     }
@@ -232,7 +258,7 @@ class Video_comp extends React.Component {
                 'like': this.state.like
             })
             .then(function(response) {
-                // console.log(response);
+                console.log(response);
             })
         } catch(e) {
             console.error(e);
@@ -251,9 +277,20 @@ class Video_comp extends React.Component {
         video.muted = true;
         video.pause();
     }
+    
+    goBack = () => {
+        const video = document.getElementById('video');
+        video.currentTime = video.currentTime - 5;
+    }
+
+    goFront = () => {
+        const video = document.getElementById('video');
+        video.currentTime = video.currentTime + 5;
+
+    }
 
     handle_play = () => {
-        if(this.state.current_playing == true) {
+        if(this.state.current_playing === true) {
             this.stop();
             this.setState({
                 user: this.state.user,
@@ -263,7 +300,7 @@ class Video_comp extends React.Component {
                 category: this.state.category,
                 current_playing: false,
                 recom_list: this.state.recom_list,
-                like: this.start.like,
+                like: this.state.like,
             });
         } else {
             this.start();
@@ -275,7 +312,7 @@ class Video_comp extends React.Component {
                 category: this.state.category,
                 current_playing: true,
                 recom_list: this.state.recom_list,
-                like: this.start.like,
+                like: this.state.like,
             })
         }
     }
@@ -283,13 +320,13 @@ class Video_comp extends React.Component {
     handleSpeed = () => {
         var value = document.getElementById('optionSpeed');
         var select = value.options[value.selectedIndex].value;
-        if(select == 'slow') {
+        if(select === 'slow') {
             document.getElementById('video').playbackRate = 0.5;
-        } else if(select == 'slow_normal') {
+        } else if(select === 'slow_normal') {
             document.getElementById('video').playbackRate = 0.75;
-        } else if(select == 'normal') {
+        } else if(select === 'normal') {
             document.getElementById('video').playbackRate = 1.0;
-        } else if(select == 'normal_high') {
+        } else if(select === 'normal_high') {
             document.getElementById('video').playbackRate = 1.25;
         } else {
             document.getElementById('video').playbackRate = 1.5;
@@ -300,18 +337,35 @@ class Video_comp extends React.Component {
         const optionDropdown = document.getElementById('optionDropdown');
         var level = optionDropdown.options[optionDropdown.selectedIndex].value;
         // console.log('Button clicked!', level);
-        this.hlsRef.currentLevel = level;
+        this.hlsRef.currentLevel = this.levelmap[level];
+        // console.log(this.levelmap[level]);
     };
 
-    handleZeroClick = () => {
-        // console.log('Button clicked!');
-        this.hlsRef.currentLevel = 0;
+    toggleVolume = () => {
+        const video = document.getElementById('video');
+        const range = document.getElementById('range');
+        if(this.state.isVolume) {
+            video.muted = false;
+            range.value = 5;
+            this.setState({isVolume: false});
+        } else {
+            video.muted = true;
+            range.value = 0;
+            this.setState({isVolume: true});
+        }
     };
 
-    handleAutoClick = () => {
-        // console.log('Button clicked!');
-        this.hlsRef.currentLevel = -1; // Auto resolution switching
-    };
+    volumeChangeHandler = (event) => {
+        const video = document.getElementById('video');
+        const newVolume = event.target.value / 10;
+        this.setState({volume: newVolume});
+        if(!newVolume) {
+            video.muted = true;
+            return;
+        }
+        video.muted = false;
+        video.volume = newVolume;
+    }
 
     async componentWillUnmount(){
         await this.handleBeforeUnload();
@@ -328,12 +382,23 @@ class Video_comp extends React.Component {
                             </Link>
                         </div>
                         <h2 className="my_h2">{this.state.user === null?'로그인해주세요!':'Sanplayer'}</h2>            
-                        <h3 className="my_h3">{this.state.name === null ? 'Loading...' : this.state.name}</h3>
+                        <h3 className="my_h3">{this.state.name === null ? 'Loading...' : this.state.name} {this.state.islive?'[LIVE]':''}</h3>
                         <div className='video_container'>
                             <video controls payload="" id="video"></video>
                             <div className='container'>
                                 <button className='btn_play' onClick={this.handle_play}>{this.state.current_playing?<BsPauseCircle />:<BsPlayCircle />}</button>
                                 <button className='btn_like' onClick={this.handleSave}>{this.state.like?<BsHeartFill />:<BsHeart />}</button>
+                                <button className='btn_back' onClick={this.goBack}><BsSkipBackward /></button>
+                                <button className='btn_forw' onClick={this.goFront}><BsSkipForward /></button>
+                                <button className="button-volume" onClick={this.toggleVolume}>
+                                {this.state.isVolume?
+                                    <img className="v_img" src="../mute.png" width="20px" height="20px" alt="mute" /> :
+                                    <img className="v_img" src="../volume.png" width="20px" height="20px" alt="sound" />
+                                }
+                                </button>
+                                <input id="range" className="v_range" type="range" min="0" max="10"
+                                    onChange={this.volumeChangeHandler}
+                                />
                                 <select id="optionSpeed" onChange={this.handleSpeed} defaultValue="normal">
                                     <option value="slow">0.5</option>
                                     <option value="slow_normal">0.75</option>
@@ -370,5 +435,5 @@ function ConditionalLink({ children, condition, ...props }) {
 
 export default function Video() {
     let params = useParams();
-    return <Video_comp param={params}/>
+    return <VideoComp param={params}/>
 }

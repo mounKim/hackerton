@@ -53,6 +53,7 @@ class StreamingQualitySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class GraphSerializer(serializers.ModelSerializer):
+    sq_id = StreamingQualitySerializer(many=False, read_only=True)
     class Meta:
         model = Graph
-        fields = ('download_bitrate', 'selected_bitrate', 'buffering_start', 'buffering_end', 'segment_duration')
+        fields = '__all__'
