@@ -50,6 +50,12 @@ class SaveVideoView(APIView):
         user = User.objects.get(username=user_id)
         pk = int(request.data.get('video_id'))
         like = request.data.get('like')
+        like_save_page = request.data.get('like_save_page')
+        
+        if not like_save_page:
+            SaveVideo.objects.get(user_id=user, video_id=pk).delete()
+            return Response({'message': 'Save Video deleted successfully'}, status=status.HTTP_201_CREATED)
+        
         try:
             get_video = VideoList.objects.get(pk=pk)
         except VideoList.DoesNotExist:
@@ -84,6 +90,12 @@ class WatchedVideoView(APIView):
         user = User.objects.get(username=user_id)
         pk = int(request.data.get('video_id'))
         time = request.data.get('time')
+        like = request.data.get('like')
+        
+        if not like:
+            WatchedVideo.objects.get(user_id=user, video_id=pk).delete()
+            return Response({'message': 'Watched Video deleted successfully'}, status=status.HTTP_201_CREATED)
+        
         try:
             get_video = VideoList.objects.get(pk=pk)
         except VideoList.DoesNotExist:

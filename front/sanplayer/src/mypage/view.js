@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import {
     Link
 } from "react-router-dom";
+import {BsXCircleFill} from 'react-icons/bs'
 
 class ViewBlock extends React.Component {
     state = {
@@ -14,6 +15,20 @@ class ViewBlock extends React.Component {
         super(props);
     }
 
+    remove = async(x) => {
+        try {
+            await axios.post('http://127.0.0.1:8000/watched_video/', {
+                'user_id': this.state.user,
+                'video_id': x,
+                'like': false
+            })
+            .then(function(response) {
+                window.location.reload();
+            })
+        } catch(e) {
+            console.error(e);
+        }
+    }
 
     async componentDidMount() {
         var user = sessionStorage.getItem('user_id');
@@ -29,7 +44,8 @@ class ViewBlock extends React.Component {
         })
         // console.log(watch_data);
         var watch_list = watch_data.map((d) => 
-            <div className='image' key={d.video_name}><a href={d.link}><img src={d.img_link} alt={d.id}/></a>{d.video_name}</div>); 
+            <div className='image' key={d.video_name}><a href={d.link}><img src={d.img_link} alt={d.id}/></a>
+            <button className='remove' onClick={(e)=>{this.remove(d.id, e)}}><BsXCircleFill /></button><div className='video_name'>{d.video_name}</div></div>); 
         this.setState({
             watch_list: watch_list
         });

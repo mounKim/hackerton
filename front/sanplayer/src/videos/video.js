@@ -110,6 +110,7 @@ class VideoComp extends React.Component {
             await axios.post(`http://127.0.0.1:8000/watched_video/`, {
                 'user_id': user,
                 'video_id': videoid,
+                'like': true,
                 'time': Date.now()
             })
             .then(function(response) {
@@ -285,6 +286,7 @@ class VideoComp extends React.Component {
                 'user_id': this.state.user,
                 'video_id': this.state.videoid,
                 'like': this.state.like,
+                'like_save_page': true,
                 'time': Date.now()
             })
             .then(function(response) {
