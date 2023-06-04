@@ -43,13 +43,17 @@ class VideoComp extends React.Component {
         this.hlsRef = null;
         this.levelmap = [];
     }
+    
 
     async componentDidMount() {
         var user = sessionStorage.getItem('user_id');
         var link = null;
         var video_name = null;
-        var video_url = null;
         const videoid = this.props.param.id;
+
+        function my_shuffle(array) {
+            array.sort(() => Math.random() - 0.5);
+        }
         
         try {
             await axios.get(`http://127.0.0.1:8000/videos/`)
@@ -64,33 +68,63 @@ class VideoComp extends React.Component {
             console.error(e);
         }
 
-        if(video_name !== null && video_url !== null && link !== null) {
-            var recom_data = null;
+        if(video_name !== null && link !== null) {
+            var im_cate = null;
             try {
-                await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
+                await axios.get("http://127.0.0.1:8000/user_category/?user_id="+user)
                 .then(function(response) {
-                    recom_data = response.data;
-                });   
-                var recom_data2 = [];
-                for(var i = 0; i < recom_data.length; i++) {
-                    if(Number(videoid) !== Number(recom_data[i]['id'])) {
-                        recom_data2.push(recom_data[i]);
+                    var n_to_c = {
+                        1: 'Rhymes and Songs',
+                        2: 'Educational',
+                        3: 'Cartoons and Animation',
+                        4: 'Gaming and Toys',
+                        5: 'Science and Exploration',
+                        6: 'Reading and Storytelling',
+                        7: 'Arts and Crafts',
+                        8: 'Comedy and Entertainment'
                     }
+
+                    var cate = response.data;
+                    var items = Object.keys(cate).map(function(key) {
+                        return [key, cate[key]];
+                    });
+                    items.sort(function(first, second) {
+                        return second[1] - first[1];
+                    });
+                    im_cate = items.slice(0, 3).map(function(e) {
+                        return n_to_c[Number(e[0].slice(5, 6))];
+                    })
+                });
+                let recom_data = [];
+                for(let k = 0; k < 3; k++) {
+                    var video_url = im_cate[k];
+                    await axios.get("http://127.0.0.1:8000/video_category/?category="+video_url)
+                    .then(function(response) {
+                        var ids = response.data.map(function(e) {
+                            return e['id']
+                        })
+                        my_shuffle(ids);
+                        if (Number(k) === 0) {
+                            ids = ids.slice(0, 5);
+                        } else if (Number(k) === 1) {
+                            ids = ids.slice(0, 3);
+                        } else {
+                            ids = ids.slice(0, 2);
+                        }
+                        recom_data = recom_data.concat(ids);
+                    })
                 }
-                /*           
-                recom_data2.map((d) => {
-                    d.link = "./" + d.id;
-                    d.img_link = "http://127.0.0.1:8000/" + d.image;
-                })
-                */
-                recom_data2.map((d) => {
-                    return d.link = "./" + d.id;
-                })
-                recom_data2.map((d) => {
-                    return d.img_link = "http://127.0.0.1:8000/" + d.image;
-                })
+                my_shuffle(recom_data);
+                var recom_data2 = recom_data.slice(0, 5);
+                var video_list = []
+                await axios.get("http://127.0.0.1:8000/videos/")
+                .then(function(response) {
+                    video_list = response.data.map((e) => {
+                        return [e.video_name, "http://127.0.0.1:8000/" + e.image, "./" + e];
+                    });
+                });
                 var recom_list = recom_data2.map((d) => 
-                    <div className='image' key={d.video_name}><a href={d.link}><img className='recom_img' src={d.img_link} alt={d.id}/></a><br /><h3 className='my_h3'>{d.video_name}</h3></div>); 
+                    <div className='image' key={video_list[d][0]}><a href={video_list[d][2]}><img className='recom_img' src={video_list[d][1]} alt={d}/></a><br /><h3 className='my_h3'>{video_list[d][0]}</h3></div>); 
                 this.setState({
                     user: user,
                     link: link,
