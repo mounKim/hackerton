@@ -454,6 +454,11 @@ class VideoComp extends React.Component {
         video.volume = newVolume;
     }
 
+    fullScreen = () => {
+        const video = document.getElementById('video');
+        video.requestFullscreen();
+    }
+
     async componentWillUnmount() {
         await this.handleBeforeUnload();
     }
@@ -496,6 +501,7 @@ class VideoComp extends React.Component {
                                 <select id="optionDropdown" onChange={this.handleLevelClick} defaultValue="init">
                                     <option value="init" >해상도</option>
                                 </select>
+                                <button className="full" onClick={this.fullScreen}>FULL</button>
                             </div>
                         </div>
                     </div>
