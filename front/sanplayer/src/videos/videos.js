@@ -115,15 +115,15 @@ class Videos extends React.Component {
             <ConditionalLink to="../login/" condition={this.state.user === null} style={{ textDecoration: "none" }}>
                 <Loading condition={this.state.categorylist === null}>
                     <div className="videos_header">
-                        <div className='mainpage_div'>
-                            <Link to="/mainpage">
-                                <img src={Main} className="mainpagelogo" alt="mainpagelogo" style={{width:"100%", height:"100%"}}/>
-                            </Link>
-                        </div>
-                        <div className='mypage_div'>
-                            <Link to="/mypage">
-                                <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
-                            </Link>
+                        <div className = "videos_head">
+                            <div className='mainpage_div'>
+                                <Link to="/mainpage">
+                                    <img src={Main} className="mainpagelogo" alt="mainpagelogo" style={{width:"100%", height:"100%"}}/>
+                                </Link>
+                            </div>
+                            <div className='mypage_div'>
+                                <Link to="/mypage">MYPAGE</Link>
+                            </div>
                         </div>
                         <h2 className='title' style={{fontSize:'35px'}}>{this.state.user === null?'로그인해주세요!':'하늘에서 보기'}</h2>
                         <div className='pad' />

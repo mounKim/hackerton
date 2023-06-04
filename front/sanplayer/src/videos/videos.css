@@ -67,23 +67,6 @@ video::-webkit-media-controls-play-button {
     color: white;
 }
 
-.videos_header .mypage_div {
-    display: inline-block;
-    height: 50px;
-    width: 50px;
-    position: absolute;
-    top: 3%;
-    left: 95%;
-}
-
-.videos_header .mainpage_div {
-    display: inline-block;
-    height: 100px;
-    width: 130px;
-    position: absolute;
-    top: 2%;
-    left: 5%;
-}
 
 .videos_header .pad {
     height: 50px;
@@ -99,4 +82,39 @@ video::-webkit-media-controls-play-button {
     height: 150px;
     width: 200px;
     pointer-events: none;
+}
+
+.videos_head{
+    position: relative;
+    width : 100%;
+}
+
+.videos_header .mainpage_div {
+    height: 100px;
+    width: 130px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.videos_header .mypage_div a{
+    position:absolute;
+    top:30px;
+    right : 20px;
+    font-size: 22px;
+    padding: 10px;
+    height: 30px;
+    width: 110px;
+    text-decoration: none;
+    border : none;
+    color: rgb(255, 255, 255);
+    border-radius: 30px;
+    text-align: center;
+    transition: top .01s linear;
+    background-color: #e094c2;
+    /* box-shadow: 0 0 0 0px #7fccde inset,
+          0 0 0 2px rgba(179, 220, 227, 0.15) inset,
+          0 8px 0 0 rgba(107, 167, 180, 0.6),
+          0 8px 0 1px rgba(145, 158, 199, 0.4),
+          0 8px 8px 1px rgba(0,0,0,0.5); */
 }
