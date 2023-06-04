@@ -19,7 +19,7 @@ const User_Info = () => {
 
     return(
         <div className='userinfo_box'>
-            <div id = "user_info">{sessionStorage.getItem('user_id')} 님 안녕하세요!</div>
+            <div id = "user_info">{sessionStorage.getItem('user_id')} 님 <br></br>안녕하세요!</div>
             <div id = "logoutdiv">
                 <button className="logout" onClick={handle_logout}>로그아웃</button>
             </div>

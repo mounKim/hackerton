@@ -204,9 +204,7 @@ class MainPage extends React.Component {
                     <Loading condition={this.state.categorylist === null}>
                         <header className='mainpage_header'>
                             <div className='mypage_div'>
-                                <Link to="/mypage">
-                                    <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
-                                </Link>
+                                <Link to="/mypage">MYPAGE</Link>
                             </div>
                             <div className="logo_div">
                                 <motion.img src={Logo} className="logo" alt="logo"

@@ -160,14 +160,15 @@
 
 .mypage_header .head .userinfo_box{
     font-size: 22px;
-    width: 130px;
-    height: 80px;
+    width: 100px;
+    height: 70px;
     padding: 15px;
     border: 2px dotted;
     border-radius: 30px;
     text-align: center;
     transition: top .01s linear;
-    margin-top: 3px;
+    margin: 10px;
+    margin-top : 15px;
     background-color: transparent;
     /* box-shadow: 0 0 0 0px #7fccde inset,
           0 0 0 2px rgba(179, 220, 227, 0.15) inset,
@@ -186,7 +187,6 @@
     color: white;
     border-radius: 20px;
     text-align: center;
-    margin-top:10px;
     transition: top .01s linear;
     background-color: rgb(136, 151, 105);
     /* box-shadow: 0 0 0 0px #7fccde inset,

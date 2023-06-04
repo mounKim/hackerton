@@ -463,10 +463,12 @@ class VideoComp extends React.Component {
             <ConditionalLink to="../login/" condition={this.state.user === null} style={{ textDecoration: "none" }}>
                 <div className="video_header">
                     <div className="wrapper">
+                        <div className="video_page_header">
                         <div className='mainpage_div'>
                             <Link to="/mainpage">
                                 <img src={Main} className="mainpagelogo" alt="mainpagelogo" style={{width:"100%", height:"100%",}}/>
                             </Link>
+                        </div>
                         </div>
                         <h2 className="my_h2">{this.state.user === null?'로그인해주세요!':'Sanplayer'}</h2>            
                         <h3 className="my_h3">{this.state.name === null ? 'Loading...' : this.state.name} {this.state.islive?'[LIVE]':''}</h3>
@@ -499,11 +501,15 @@ class VideoComp extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <div className='mypage_div'>
+
+                    {/* <Link to="/mypage">
+                        <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
+                    </Link> */}
+                    </div>
                     <div className='recommend'>
-                        <div className='mypage_div'>
-                            <Link to="/mypage">
-                                <img src={User} className="mypagelogo" alt="mypagelogo" style={{width:"100%", height:"100%"}}/>
-                            </Link>
+                        <div id="vido_page_mypage_button">
+                            <Link to="/mypage">MYPAGE</Link>
                         </div>
                         <h2 className="my_h2">추천 동영상</h2>
                         {this.state.recom_list}

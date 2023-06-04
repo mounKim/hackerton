@@ -154,7 +154,27 @@
 .mainpage_div .mypage_div {
     height: 50px;
     width: 50px;
-    position: relative;
-    top: 3%;
-    left: 47%;
+    margin-top: 25px;
+    margin-left: 85%;
+}
+
+.mainpage_div .mypage_div a{
+    margin-top: 20px;
+    font-size: 22px;
+    /* margin-right : 20px; */
+    padding: 10px;
+    height: 30px;
+    width: 110px;
+    text-decoration: none;
+    border : none;
+    color: rgb(255, 255, 255);
+    border-radius: 30px;
+    text-align: center;
+    transition: top .01s linear;
+    background-color: #f8bee2;
+    /* box-shadow: 0 0 0 0px #7fccde inset,
+          0 0 0 2px rgba(179, 220, 227, 0.15) inset,
+          0 8px 0 0 rgba(107, 167, 180, 0.6),
+          0 8px 0 1px rgba(145, 158, 199, 0.4),
+          0 8px 8px 1px rgba(0,0,0,0.5); */
 }
