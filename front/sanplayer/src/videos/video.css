@@ -115,6 +115,17 @@ video::-webkit-media-controls-mute-button {
     border: transparent;
 }
 
+.video_header .full {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-weight: 700;
+    font-size: 25px;
+    text-shadow: 6px 2px 2px gray;
+    background-color: transparent;
+    border: transparent;
+}
+
 .button-volume {
     position: absolute;
     background-color: transparent;
@@ -152,7 +163,7 @@ select {
 .video_header #optionSpeed {
     position: absolute;
     top:5px;
-    right:160px;
+    right:260px;
     padding: 4px;
     color:rgb(18, 15, 17);
     background-color: #ffb5a9;
@@ -163,7 +174,7 @@ select {
 .video_header #optionDropdown {
     position: absolute;
     top:5px;
-    right:1px;
+    right:100px;
     padding: 4px;
     color:rgb(18, 15, 17);
     background-color: #ffe09c;
