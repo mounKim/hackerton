@@ -32,11 +32,11 @@ Test 환경은 다음과 같다.
 - Database : PostgreSQL
     - unit test와 integration에 사용되는 DB는 local이다. (DB name : test_SanPlayer)
         
-        ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled.png)
+        ![Untitled](/docs/TestPlan/Untitled.png)
         
     - system test 및 사용자의 실제 앱 구동시에는 eleplantSQL의 서버를 이용한다. (DB name : opuasmgb)
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%201.png)
+    ![Untitled](/docs/TestPlan/Untitled%201.png)
     
 - Unit & Integration Testing frameworks : Django Test Framework
 - System Test : use cases
@@ -127,57 +127,57 @@ test code : [https://github.com/ConnectedWithMinsu/san_player/blob/main/backend/
 - Unit Tests 결과
     - testing model
         
-        ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%202.png)
+        ![Untitled](/docs/TestPlan/Untitled%202.png)
         
     - testing view(api)
         
-        ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%203.png)
+        ![Untitled](/docs/TestPlan/Untitled%203.png)
         
 - Integration Tests 결과
     - test integrations
         
-        ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%204.png)
+        ![Untitled](/docs/TestPlan/Untitled%204.png)
         
     - Total Coverage
         
-        ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%205.png)
+        ![Untitled](/docs/TestPlan/Untitled%205.png)
         
 - System Tests 결과
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%206.png)
+    ![Untitled](/docs/TestPlan/Untitled%206.png)
     
     ID 1, 2, 4, 6의 결과 : Success
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%207.png)
+    ![Untitled](/docs/TestPlan/Untitled%207.png)
     
     ID 3의 결과 : Success
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%208.png)
+    ![Untitled](/docs/TestPlan/Untitled%208.png)
     
     ID 5, 14, 19의 결과 : Success
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%209.png)
+    ![Untitled](/docs/TestPlan/Untitled%209.png)
     
     ID 7의 결과 : Success
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%2010.png)
+    ![Untitled](/docs/TestPlan/Untitled%2010.png)
     
     ID 8, 9, 10, 15, 17의 결과 : Success
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%2011.png)
+    ![Untitled](/docs/TestPlan/Untitled%2011.png)
     
     ID 12, 13의 결과 : Success
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%2012.png)
+    ![Untitled](/docs/TestPlan/Untitled%2012.png)
     
      ID 16의 결과 : Success
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%2013.png)
+    ![Untitled](/docs/TestPlan/Untitled%2013.png)
     
     ID 18, 20의 결과 : Success
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%2014.png)
+    ![Untitled](/docs/TestPlan/Untitled%2014.png)
     
     ID 21의 결과 : Success
     
-    ![Untitled](/docs/Test%20Plan%20Document%20eaa580e96e584f7abdf31e262a399a3b/Untitled%2015.png)
+    ![Untitled](/docs/TestPlan/Untitled%2015.png)
