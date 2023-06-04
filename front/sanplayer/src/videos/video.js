@@ -115,12 +115,18 @@ class VideoComp extends React.Component {
                     })
                 }
                 my_shuffle(recom_data);
-                var recom_data2 = recom_data.slice(0, 5);
+                var recom_data2 = [];
+                recom_data = recom_data.slice(0, 5);
+                for(var i = 0; i < 5; i++) {
+                    if(Number(videoid) - 1 !== Number(recom_data[i])) {
+                        recom_data2.push(recom_data[i]);
+                    }
+                }
                 var video_list = []
                 await axios.get("http://127.0.0.1:8000/videos/")
                 .then(function(response) {
                     video_list = response.data.map((e) => {
-                        return [e.video_name, "http://127.0.0.1:8000/" + e.image, "./" + e];
+                        return [e.video_name, "http://127.0.0.1:8000/" + e.image, "./" + e.id];
                     });
                 });
                 var recom_list = recom_data2.map((d) => 
@@ -139,7 +145,6 @@ class VideoComp extends React.Component {
                 console.error(e);
             }
         }
-
         try {
             await axios.post(`http://127.0.0.1:8000/watched_video/`, {
                 'user_id': user,
