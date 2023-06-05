@@ -12,7 +12,7 @@ video::-webkit-media-controls-mute-button {
 
 .video_header {
     width: 100%;
-    height: 47.52rem;
+    height: 60rem;
     background-color: rgb(238, 236, 218);
     color: white;
     display: flex;
@@ -28,8 +28,8 @@ video::-webkit-media-controls-mute-button {
 }
 
 .video_header .video_container {
-    width: 880px;
-    height: 542px;
+    width: 1080px;
+    height: 640px;
     padding : 1px;
     padding-bottom: 20px;
     background-color: #7C7877;
@@ -38,8 +38,8 @@ video::-webkit-media-controls-mute-button {
 
 .video_header #video {
     padding-top: 12px;
-    width: 860px;
-    height: 480px;
+    width: 1060px;
+    height: 580px;
     margin-bottom: 3px;
 }
 

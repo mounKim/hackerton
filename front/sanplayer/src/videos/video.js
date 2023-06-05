@@ -476,7 +476,7 @@ class VideoComp extends React.Component {
                         </div>
                         </div>
                         <h2 className="my_h2">{this.state.user === null?'로그인해주세요!':'Sanplayer'}</h2>            
-                        <h3 className="my_h3">{this.state.name === null ? 'Loading...' : this.state.name} {this.state.islive?'[LIVE]':''}</h3>
+                        <h3 className="my_h3">{this.state.name === null ? 'Loading...' : this.state.name}</h3>
                         <div className='video_container'>
                             <video controls payload="" id="video"></video>
                             <div className='container'>
