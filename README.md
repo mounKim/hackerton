@@ -15,34 +15,17 @@
 ### - Front : react
 ### - Back : django
 ### - DB : postgresql (elephantsql 서버 이용)
-
----
-## 진행 상황
-
-- 로그인
-![Data](demo/login.png)
-- 회원가입
-![Data](demo/register.png)
-
-- 비디오 목록 출력
-![Data](demo/video_list.png)
-
-- 유저별 비디오 카테고리 추천 (산 크기 = 카테고리 추천 정도)
-![Data](demo/recommend.png)
-
-- 영상 재생
-![Data](demo/video_play.png)
-
-
-- 앞으로 :
-    - 마이페이지
-        - 유저별 찜한 비디오 목록
-        - 유저별 시청 기록
-        - 동영상 스트리밍 정보 저장 및 시각화
-    - 해상도 설정
-    - 기타 : 사용자 편의를 위한 디테일한 부분 수정
-
 ----
+
+## Documents
+[설계문서](https://github.com/ConnectedWithMinsu/san_player/blob/main/docs/%EC%84%A4%EA%B3%84%EB%AC%B8%EC%84%9C.md)
+
+[RestAPI1문서](https://github.com/ConnectedWithMinsu/san_player/blob/main/docs/REST%20API%20%EB%AC%B8%EC%84%9C%201.md)
+
+[RestAPI2문서](https://github.com/ConnectedWithMinsu/san_player/blob/main/docs/REST%20API%20%EB%AC%B8%EC%84%9C%202.md)
+
+[테스트 계획 문서](https://github.com/ConnectedWithMinsu/san_player/blob/main/docs/Test%20Plan%20Document.md)
+
 ## Environment
 ```
 conda create -n ott python=3.8
