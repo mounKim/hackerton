@@ -26,6 +26,9 @@
 
 [테스트 계획 문서](https://github.com/ConnectedWithMinsu/san_player/blob/main/docs/Test%20Plan%20Document.md)
 
+## PPT
+[발표자료 PPT](https://docs.google.com/presentation/d/1O3G2xlnOTeLFOeFv36_ENvAmfFoTIOCvW4miZH2I1mU/edit#slide=id.g24e9619ce63_0_53)
+
 ## Environment
 ```
 conda create -n ott python=3.8
