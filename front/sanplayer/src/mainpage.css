@@ -1,180 +1,55 @@
-.mainpage_div {
-    overflow: hidden;
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-.mainpage_div .mainpage_header {
-    background-color: #c5e9fc;
-    min-height: 60vh;
-    display: flex;
-    width: 100%;
-    height:100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
+/* 상단 사이트 이름 스타일 */
+header {
+    background-color: #008485;
     color: white;
-}
-
-.mainpage_header .logo {
-    height: 150px;
-    width: 200px;
-    pointer-events: none;
-}
-
-.mainpage_div .logo {
-    height: 150px;
-    width: 200px;
-    pointer-events: none;
-}
-
-.mainpage_div .mainpage_body {
-    background-color: #C7EBFF;
-    min-height: 40vh;
-    display: flex;
-    width: 100%;
-    height:100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: rgb(255, 245, 212);
-    text-shadow: 3px 3px 6px rgb(96, 96, 96);
-
-}
-
-.mainpage_div .cloudbutton1 {
-    background-color: transparent;
-    border: transparent;
-    width: 300px;
-    height: 140px;
-}
-.mainpage_div .cloudbutton2 {
-    background-color: transparent;
-    border: transparent;
-    width: 200px;
-    height: 95px;
-}
-
-.mainpage_div .mountainbutton {
-    top: 0;
-    left: 0;
-    border: transparent;
-    width: 100%;
-    height: 100%;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-}
-
-.mainpage_div .mountains {
-    position: relative;
-}
-
-.mainpage_div .mountainimage {
-    width: 100%;
-    height: 100%;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-}
-
-.mainpage_div .mtdiv {
-    float: left;
-    position: absolute;
-    /* uncomment this to make border*/
-    /* background-color: green; */
-    margin: 0%;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-}
-
-.mainpage_div .mtdiv:hover {
-    z-index: 1000 !important;
-}
-
-.mainpage_div .mountainname {
-    position: relative;
-    color: white;
-    bottom: 20%;
     text-align: center;
+    padding: 10px 0;
 }
 
-.mainpage_div .thumbnail {
-    width: 280px;
-    height: 167px;
-    border-radius: 5%;
-    margin: 5px;
-    margin-top: 9px;
-}
+.main_container {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    grid-template-columns: 740px 330px; /* 각 행(세로줄)의 길이 */
+    grid-template-rows: 120px 310px 890px 130px; /* 각 열(가로줄)의 길이 */
+    gap: 10px; /* 자식요소간의 간격 */
+  }
 
-.mainpage_div .videobutton {
-    border-style: solid;
-    background-color: transparent;
-    border-width: 2px 2px 2px 2px;
-    border-color: white;
-    border-radius: 5%;
-}
-
-.mainpage_div .videoname {
+/* 왼쪽 카테고리 스타일 */
+.categories {
+    width: 20%;
+    height: 1500px;
+    background-color: #666;
     color: white;
-}
-
-.mainpage_div .videolist {
-    width: 100%;
-    height:100%;
-
-    background-color: #ac7e5d;
-}
-
-.mainpage_div .videosdiv {
-    position: relative;
-    white-space: nowrap;
-    top: -36px;
-    width: 100%;
-    height:384px;
-}
-
-.mainpage_div .nomountain {
-    line-height: 9;
-}
-
-.mainpage_div .selectedmountain {
-    line-height: 2;
-    position: relative;
-    left: -20%;
-    top: 10%;
-    text-shadow: 2px 2px 6px rgb(36, 34, 34);
-}
-
-.mainpage_div .videoscroll {
-    overflow:auto;
-    background-color: #7a4e4eee;
-}
-
-.mainpage_div .videodiv {
-    display: inline-block;
-    margin: 10px;
-}
-
-.mainpage_div .mypage_div {
-    height: 50px;
-    width: 50px;
-    margin-top: 25px;
-    margin-left: 85%;
-}
-
-.mainpage_div .mypage_div a{
-    margin-top: 20px;
-    font-size: 22px;
-    /* margin-right : 20px; */
     padding: 10px;
-    height: 30px;
-    width: 110px;
-    text-decoration: none;
-    border : none;
-    color: rgb(255, 255, 255);
-    border-radius: 30px;
-    text-align: center;
-    transition: top .01s linear;
-    background-color: #f8bee2;
-    /* box-shadow: 0 0 0 0px #7fccde inset,
-          0 0 0 2px rgba(179, 220, 227, 0.15) inset,
-          0 8px 0 0 rgba(107, 167, 180, 0.6),
-          0 8px 0 1px rgba(145, 158, 199, 0.4),
-          0 8px 8px 1px rgba(0,0,0,0.5); */
 }
+
+/* 오른쪽 게시글 목록 스타일 */
+.posts { 
+    width: 80%;
+    height: 1500px;
+    background-color: #dbdbdb;
+    padding: 10px;
+}
+
+#info {
+    border: 0px;
+    background-color: #008485;
+    position: absolute;
+    font-size: 40px;
+    top: 20px;
+    right: 20px;
+}
+
+#info:hover ~ .menubars {
+    color:red;
+}
+
+.menubars

@@ -7,9 +7,9 @@ import Chart from './mypage/chart';
 import Graph from './mypage/graph';
 import Video from './videos/video';
 import Videos from './videos/videos';
+import Info from './info';
 import Login from './login';
-import NotFound from './notfound';
-import Register from './register';
+import Register from './viet';
 import MainPage from './mainpage';
 import './App.css';
 
@@ -29,9 +29,9 @@ function App() {
         {/* <Switch>
           <Route path="/videos/:id" children={<Video />}/>
         </Switch> */}
-        <Route path="/register" element={<Register />}></Route>
+        <Route path="/info" element={<Info />}></Route>
+        <Route path="/viet" element={<Register />}></Route>
         <Route path="/mainpage" element={<MainPage />}></Route>
-        <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>
     </div>
